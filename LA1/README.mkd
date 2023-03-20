@@ -1,0 +1,8 @@
+
+# COM3505 Lab Assessment 1
+
+Put your documentation here. 
+
+Put your code in [PrAndUpThing/PrAndUpThing.ino](PrAndUpThing/PrAndUpThing.ino).
+
+See [the rubric](rubric.mkd) for more details.

@@ -1,0 +1,91 @@
+
+# Lab Assessment 1 (LA1) ####################################################
+
+The assessment is to build and document a device which gives a **visual
+indication** of the stages involved in **provisioning** and **update**. You
+can use LEDs to show what stage the processes are in at any point in time.
+Optionally you can also use the ESP32's built-in touch sensing capability to
+make the processes easier and/or more secure.
+
+To do this construct a (breadboard-based) IoT device which:
+
+- can be used to illustrate provisioning and update functions
+- illuminates LEDs to indicate different stages of those functions
+- is well-documented at both technical and operational levels, including
+  hardware photographs, and a brief video (**maximum** 1 minute long) of the
+  system in use
+- (optionally) accepts signals via the ESP32's touch sensing capability (a
+  simple wire connected to one of the touch-capable pins will suffice); these
+  signals should be used to manage process events (e.g. to control when an
+  update can be made)
+
+The code and documentation of the device **must be located** in your gitlab
+repository (`com3505-student-2023`) under a top-level directory named `LA1`.
+You must use the `main` branch in your repository. Documentation must be in a
+`README.mkd` in the `LA1` directory, and code in a subdirectory called
+`PrAndUpThing`. (You can choose where to store the video and link it as
+appropriate; please ensure that it is unlisted (not public) but still
+accessible to myself.)
+
+For example, when cloned the file structure will looks like this:
+
+- `com3505-student-2023/LA1`
+- `com3505-student-2023/LA1/README.mkd`
+- `com3505-student-2023/LA1/rubric.mkd` (this file)
+- `com3505-student-2023/LA1/`...other doc files, e.g. images, etc....
+- `com3505-student-2023/LA1/PrAndUpThing`
+- `com3505-student-2023/LA1/PrAndUpThing/PrAndUpThing.ino`
+- `com3505-student-2023/LA1/PrAndUpThing/`...other code files if needed
+
+You are free to use code from [the course
+exercises](https://gitlab.com/hamishcunningham/the-internet-of-things/-/tree/master/exercises)
+and/or your own implementations. (A minimal but acceptable answer could use
+Ex09 and Ex10 separately, with LED indications of the process that the two
+examples go through. A fuller answer might combine or replace those examples,
+and add touch control.)
+
+The work will be assessed according to:
+
+- hardware
+- firmware code
+- documentation
+
+**Notes**:
+
+- **ARE YOU REGISTERED?!** If you don't have a private repository on
+  `gitlab.com` called `com3505-student-2023` with me as a maintainer that
+  contains a file called `welcome.txt` there that was **pushed by me**, then
+  you **aren't registered** and will fail this assessment! If this is an error
+  please email me immediately!
+- **Deadline**. Fri 31st March 2023 at 12 midday UK time. (At this point a
+  snapshot of your gitlab repository will be taken for marking.) If you are in
+  possession of the appropriate LSP please drop me a brief email detailing any
+  extra time that you may require.
+- **Size**. If you have spent the approximate amount of time we recommend for
+  a 10 credit course (around 8 hours per week) on the work so far, you should
+  be able to achieve a good solution (including hardware, code and
+  documentation) within a similar amount of time (8 hours), or less.
+- **Marks**. The assessment contributes either 20 (pass), or 0 (fail) to your
+  score for the course. Marks will be allocated for both qualitative and
+  quantitative characteristics of hardware, code, and documentation. (A pass
+  mark is possible without adding any optional elements.)
+- **Code**. Code is assessed according to both functionality (does the device
+  do what is intended? is the operation robust in face of different
+  conditions? etc.) and quality (is it structured to enhance readability and
+  maintainability? is there appropriate commenting? does it conform to a style
+  and stick to it? are interfaces minimised and simplicity maximised? etc.).
+- **Documentation**. In addition documentation is assessed, and students'
+  abilities to demonstrate their work in operation. Documentation which is
+  clear, well written and illustrated appropriately will score more marks, as
+  will reference to appropriate supporting materials (e.g. from the course
+  reading lists). Linking of on-line API reference materials and/or library
+  sources is also a good idea.
+- **Testing**. Code that "seems to work" is the first step in a (non-TDD!)
+  project; code that has been tested to destruction, fixed and tested again,
+  and again, and again, stands a chance of being _reliable_. Documenting what
+  type of testing is appropriate to a particular task will attract extra
+  marks, as will the implementation of tests and/or data collection routines
+  that make the performance characteristics of code more explicit.
+
+Further details of the assessment scheme are given in [Chapter 1 of the course
+notes](https://iot.unphone.net/#assessment).

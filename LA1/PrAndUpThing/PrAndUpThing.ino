@@ -7,10 +7,11 @@
 #define FIRMWARE_SERVER_IP_ADDR "172.20.10.7"
 #define FIRMWARE_SERVER_PORT    "8000"
 
+// Access point (AP) settings
 const char *apSSID = "MyESP32AP";
 const char *apPassword = "mypassword";
 
-// LED
+// LED pins
 const int redPin = 6;
 const int yellowPin = 9;
 const int greenPin = 12;
@@ -19,6 +20,7 @@ WebServer server(80);
 
 bool startOTAUpdate = false;
 
+// Handle root URL for displaying available WiFi networks and a form to enter credentials
 void handleRoot() {
   setLED(redPin, LOW); // Turn off red LED when attempting to connect again
   String html = "<html><head><title>ESP32 Provisioning</title></head>";
@@ -47,6 +49,7 @@ void handleRoot() {
   server.send(200, "text/html", html);
 }
 
+// Handle "/connect" URL for connecting the device to the specified WiFi network
 void handleConnect() {
   String ssid = server.arg("ssid");
   String password = server.arg("password");
@@ -86,6 +89,7 @@ void handleConnect() {
   server.send(200, "text/html", html);
 }
 
+// Update Function triggered by an interrupt when a button is pressed
 void onButtonPress() {
   startOTAUpdate = true;
   // Turn off all LEDs when the button is pressed
@@ -94,6 +98,7 @@ void onButtonPress() {
   setLED(greenPin, LOW);
 }
 
+// Initializes the ESP32 device, sets up the access point, and defines the server routes
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_AP);
@@ -115,10 +120,12 @@ void setup() {
   pinMode(greenPin, OUTPUT);
 }
 
+// Sets the state of a given LED pin
 void setLED(int pin, bool state) {
   digitalWrite(pin, state ? HIGH : LOW);
 }
 
+// Flashes a given LED pin for a specified interval and number of times
 void flashLED(int pin, int interval, int times) {
   for (int i = 0; i < times; i++) {
     setLED(pin, HIGH);
@@ -128,6 +135,7 @@ void flashLED(int pin, int interval, int times) {
   }
 }
 
+// Main loop that checks for incoming HTTP requests and starts an OTA update if the startOTAUpdate flag is true
 void loop() {
   server.handleClient();
 
@@ -137,6 +145,7 @@ void loop() {
   }
 }
 
+// Performs the OTA firmware update process
 void performOTAUpdate() {
   Serial.println("Starting performOTAUpdate function...");
   HTTPClient http;
@@ -213,6 +222,7 @@ void performOTAUpdate() {
   stream.flush();
 }
 
+// Performs an HTTP GET request to the firmware server and returns the response code
 int doCloudGet(HTTPClient *http, String fileName) {
   String url =
     String("http://") + FIRMWARE_SERVER_IP_ADDR + ":" +

@@ -1,5 +1,3 @@
-// PrAndUpThing.ino
-
 #include <WiFi.h>
 #include <WebServer.h>
 #include <HTTPClient.h>
@@ -22,6 +20,7 @@ WebServer server(80);
 bool startOTAUpdate = false;
 
 void handleRoot() {
+  setLED(redPin, LOW); // Turn off red LED when attempting to connect again
   String html = "<html><head><title>ESP32 Provisioning</title></head>";
   html += "<body><h1>Available WiFi Networks:</h1>";
 
@@ -62,7 +61,8 @@ void handleConnect() {
   while (WiFi.status() != WL_CONNECTED) {
     if (millis() - startTime > connectionTimeout) {
       Serial.println("Connection timed out.");
-      server.send(400, "text/html", "Failed to connect to WiFi. Please try again.");
+      server.sendHeader("Location", "/", true);
+      server.send(302, "text/plain", "Failed to connect to WiFi. Redirecting...");
       setLED(yellowPin, LOW);
       setLED(redPin, HIGH); // Turn on red LED on connection failure
       return;
@@ -88,8 +88,11 @@ void handleConnect() {
 
 void onButtonPress() {
   startOTAUpdate = true;
+  // Turn off all LEDs when the button is pressed
+  setLED(redPin, LOW);
+  setLED(yellowPin, LOW);
+  setLED(greenPin, LOW);
 }
-
 
 void setup() {
   Serial.begin(115200);
@@ -111,7 +114,6 @@ void setup() {
   pinMode(yellowPin, OUTPUT);
   pinMode(greenPin, OUTPUT);
 }
-
 
 void setLED(int pin, bool state) {
   digitalWrite(pin, state ? HIGH : LOW);
@@ -135,7 +137,6 @@ void loop() {
   }
 }
 
-
 void performOTAUpdate() {
   Serial.println("Starting performOTAUpdate function...");
   HTTPClient http;
@@ -148,6 +149,7 @@ void performOTAUpdate() {
     highestAvailableVersion = atoi(http.getString().c_str());
   } else {
     Serial.printf("Couldn't get version! Return code: %d\n", respCode);
+    flashLED(redPin, 500, 4); // Flash red LED for failed version check
   }
   http.end(); // Free resources
 
@@ -183,21 +185,24 @@ void performOTAUpdate() {
   WiFiClient stream = http.getStream();
   if (Update.begin(updateLength)) {
     Serial.printf("Starting OTA update...\n");
-    setLED(yellowPin, HIGH); // Turn on yellow LED during OTA update
-    if (Update.writeStream(stream) == updateLength) {
-      Serial.printf("Successfully written %d bytes. Finishing the update...\n", updateLength);
-      if (Update.end()) {
-        setLED(yellowPin, LOW); // Turn off yellow LED after OTA update
-        flashLED(greenPin, 500, 4); // Flash green LED for successful OTA update
-        Serial.println("OTA update successfully finished. Rebooting...");
-        ESP.restart();
+    // Flash yellow LED during OTA update
+    size_t writtenBytes = 0;
+    while (writtenBytes < updateLength) {
+      size_t currentBytes = Update.writeStream(stream);
+      writtenBytes += currentBytes;
+      if (currentBytes > 0) {
+        flashLED(yellowPin, 500, 1);
       } else {
-        Serial.printf("Error finishing the update: %d\n", Update.getError());
-        setLED(yellowPin, LOW); // Turn off yellow LED after OTA update
-        flashLED(redPin, 500, 4); // Flash red LED for failed OTA update
+        delay(500);
       }
+    }
+    if (Update.end()) {
+      setLED(yellowPin, LOW); // Turn off yellow LED after OTA update
+      flashLED(greenPin, 500, 4); // Flash green LED for successful OTA update
+      Serial.println("OTA update successfully finished. Rebooting...");
+      ESP.restart();
     } else {
-      Serial.printf("Error during the update: %d\n", Update.getError());
+      Serial.printf("Error finishing the update: %d\n", Update.getError());
       setLED(yellowPin, LOW); // Turn off yellow LED after OTA update
       flashLED(redPin, 500, 4); // Flash red LED for failed OTA update
     }
@@ -207,8 +212,6 @@ void performOTAUpdate() {
   }
   stream.flush();
 }
-
-
 
 int doCloudGet(HTTPClient *http, String fileName) {
   String url =

@@ -12,6 +12,11 @@
 const char *apSSID = "MyESP32AP";
 const char *apPassword = "mypassword";
 
+// LED
+const int redPin = 6;
+const int yellowPin = 9;
+const int greenPin = 12;
+
 WebServer server(80);
 
 bool startOTAUpdate = false;
@@ -50,6 +55,7 @@ void handleConnect() {
   WiFi.mode(WIFI_AP_STA);
   WiFi.begin(ssid.c_str(), password.c_str());
 
+  setLED(yellowPin, HIGH); // Turn on yellow LED while connecting
   unsigned long startTime = millis();
   unsigned long connectionTimeout = 20000; // 20 seconds timeout
 
@@ -57,11 +63,16 @@ void handleConnect() {
     if (millis() - startTime > connectionTimeout) {
       Serial.println("Connection timed out.");
       server.send(400, "text/html", "Failed to connect to WiFi. Please try again.");
+      setLED(yellowPin, LOW);
+      setLED(redPin, HIGH); // Turn on red LED on connection failure
       return;
     }
     delay(1000);
     Serial.println("Connecting to WiFi...");
   }
+
+  setLED(yellowPin, LOW); // Turn off yellow LED after connection
+  setLED(greenPin, HIGH); // Turn on green LED after connection
 
   String html = "<html><head><title>ESP32 Provisioning</title></head>";
   html += "<body><h1>Connected to WiFi:</h1>";
@@ -79,6 +90,7 @@ void onButtonPress() {
   startOTAUpdate = true;
 }
 
+
 void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_AP);
@@ -93,18 +105,35 @@ void setup() {
 
   // Attach interrupt to trigger when the switch is pressed
   attachInterrupt(digitalPinToInterrupt(5), onButtonPress, FALLING);
+
+  // Initialize LED pins
+  pinMode(redPin, OUTPUT);
+  pinMode(yellowPin, OUTPUT);
+  pinMode(greenPin, OUTPUT);
+}
+
+
+void setLED(int pin, bool state) {
+  digitalWrite(pin, state ? HIGH : LOW);
+}
+
+void flashLED(int pin, int interval, int times) {
+  for (int i = 0; i < times; i++) {
+    setLED(pin, HIGH);
+    delay(interval);
+    setLED(pin, LOW);
+    delay(interval);
+  }
 }
 
 void loop() {
   server.handleClient();
 
   if (startOTAUpdate) {
-    startOTAUpdate = false; // Reset the flag
-    performOTAUpdate(); // Start the OTA update
+    startOTAUpdate = false;
+    performOTAUpdate();
   }
 }
-
-// Keep the performOTAUpdate and doCloudGet functions
 
 
 void performOTAUpdate() {
@@ -147,28 +176,39 @@ void performOTAUpdate() {
   } else {
     Serial.printf("Failed to get .bin! Return code is: %d\n", respCode);
     http.end();
+    flashLED(redPin, 500, 4); // Flash red LED for failed .bin download
     return;
   }
 
   WiFiClient stream = http.getStream();
   if (Update.begin(updateLength)) {
     Serial.printf("Starting OTA update...\n");
+    setLED(yellowPin, HIGH); // Turn on yellow LED during OTA update
     if (Update.writeStream(stream) == updateLength) {
       Serial.printf("Successfully written %d bytes. Finishing the update...\n", updateLength);
       if (Update.end()) {
+        setLED(yellowPin, LOW); // Turn off yellow LED after OTA update
+        flashLED(greenPin, 500, 4); // Flash green LED for successful OTA update
         Serial.println("OTA update successfully finished. Rebooting...");
         ESP.restart();
       } else {
         Serial.printf("Error finishing the update: %d\n", Update.getError());
+        setLED(yellowPin, LOW); // Turn off yellow LED after OTA update
+        flashLED(redPin, 500, 4); // Flash red LED for failed OTA update
       }
     } else {
       Serial.printf("Error during the update: %d\n", Update.getError());
+      setLED(yellowPin, LOW); // Turn off yellow LED after OTA update
+      flashLED(redPin, 500, 4); // Flash red LED for failed OTA update
     }
   } else {
     Serial.printf("Not enough space to start OTA update\n");
+    flashLED(redPin, 500, 4); // Flash red LED for not enough space
   }
   stream.flush();
 }
+
+
 
 int doCloudGet(HTTPClient *http, String fileName) {
   String url =

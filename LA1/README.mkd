@@ -1,8 +1,63 @@
-
 # COM3505 Lab Assessment 1
 
-Put your documentation here. 
+# ESP32 WiFi Provisioning and OTA Firmware Update
 
-Put your code in [PrAndUpThing/PrAndUpThing.ino](PrAndUpThing/PrAndUpThing.ino).
+This C++ code is designed for an ESP32 microcontroller to provide WiFi provisioning and over-the-air (OTA) firmware updates. The code sets up an access point (AP) using the ESP32, which users can connect to in order to configure the device with their WiFi credentials. Once connected, the device can perform OTA firmware updates using a provided firmware server.
 
-See [the rubric](rubric.mkd) for more details.
+## Libraries
+
+The code utilizes the following libraries:
+
+- `WiFi.h`: Provides the necessary functions to connect to WiFi networks and set up an access point. (Source: [https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi))
+- `WebServer.h`: Used to create a simple HTTP server on the ESP32. (Source: [https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer))
+- `HTTPClient.h`: Provides functions to make HTTP requests, used to get firmware updates from the server. (Source: [https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient](https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient))
+- `Update.h`: Used for handling OTA updates on the ESP32. (Source: [https://github.com/espressif/arduino-esp32/tree/master/libraries/Update](https://github.com/espressif/arduino-esp32/tree/master/libraries/Update))
+
+## Constants
+
+The following constants are defined, use them wisely:
+
+- `FIRMWARE_VERSION`: Current firmware version of the device.
+- `FIRMWARE_SERVER_IP_ADDR`: IP address of the firmware server.
+- `FIRMWARE_SERVER_PORT`: Port number of the firmware server.
+- `apSSID`: SSID for the ESP32's access point.
+- `apPassword`: Password for the ESP32's access point (and no, "password123" is not a good choice ~~ignore my password~~).
+
+## LED Setup
+
+Why can't the Three LEDs stop blinking? because it was too bright.... sorry. They are connected to the following pins:
+
+- `redPin`: Red LED, indicates connection failure. Pin 6.
+- `yellowPin`: Yellow LED, indicates connecting or updating. Pin 9
+- `greenPin`: Green LED, indicates successful connection. Pin 12
+
+## WebServer
+
+A `WebServer` object, named `server`, is created on port 80. It's like a tiny bouncer for incoming requests.
+
+## Functions
+
+The following functions are defined in the code:
+
+- `handleRoot()`: Handles the root URL ("/") of the web server, displaying a list of available WiFi networks and a form to enter WiFi credentials.
+- `handleConnect()`: Handles the "/connect" URL, connecting the device to the specified WiFi network using the provided credentials. It's like a virtual handshake between devices.
+- `onButtonPress()`: Triggered by an interrupt when a button connected to GPIO pin 5 is pressed. Sets the `startOTAUpdate` flag to true. Upgrades people, upgrades!
+- `setup()`: Initializes the ESP32 device, sets up the access point, and defines the server routes.
+- `setLED()`: Sets the state of a given LED pin. 
+- `flashLED()`: Flashes a given LED pin for a specified interval and number of times. A rave for LEDs.
+- `loop()`: Main loop that checks for incoming HTTP requests and starts an OTA update if the `startOTAUpdate` flag is true. 
+- `performOTAUpdate()`: Performs the OTA firmware update process, including checking for new firmware versions and downloading and installing the new firmware. Next level stuff, literally!
+- `doCloudGet()`: Performs an HTTP GET request to the firmware server and returns the response code.
+
+## Workflow
+
+1. The device starts in AP mode, creating a WiFi network with the given SSID and password.
+2. The user connects to the device's WiFi network and navigates to the root URL. 
+3. The user selects a WiFi network and enters its password, then submits the form. 
+4. The device connects to the specified WiFi network and displays its IP address. 
+5. The user presses a button connected to GPIO pin 5, triggering the OTA update process.
+6. The device checks the firmware server for updates and downloads and installs the new firmware if necessary. LED indicators show the update progress and success or failure.
+
+## Notes
+
+Please ensure that the person implementing this code has connected the LEDs and button to the appropriate GPIO pins on the ESP32. They should also set the access point SSID and password, as well as the firmware server IP address and port number according to their specific requirements. You know what they say, measure twice, connect once.

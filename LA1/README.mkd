@@ -71,6 +71,13 @@ The following functions are defined in the code:
 5. The user presses a button connected to GPIO pin 5, triggering the OTA update process.
 6. The device checks the firmware server for updates and downloads and installs the new firmware if necessary. LED indicators show the update progress and success or failure.
 
+## Visualization
+
+The code uses three LEDs to provide status updates. Here is what each LED lighting up represents:
+
+- Red LED (pin 6): This LED is turned on when there is a connection failure to the WiFi network. It is also turned on if there is a failure during the OTA update process, such as not enough space or a failed update. It is turned off when attempting to connect again or after the OTA update process is complete.
+- Yellow LED (pin 9): This LED is turned on while the device is connecting to the WiFi network. It is turned off after the connection is established. During the OTA update process, it flashes once every 500ms to indicate the update is in progress.
+- Green LED (pin 12): This LED is turned on after the connection to the WiFi network is established. During the OTA update process, it flashes four times every 500ms to indicate that the update was successful.
 
 
 ## Testing

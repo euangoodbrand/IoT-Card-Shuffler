@@ -8,6 +8,11 @@ This C++ code is designed for an ESP32 microcontroller to provide WiFi provision
 
 ![Setup with labels](setup_labelled.png)
 
+## Video Of Correct Functionality
+
+<video src="./Provisioning_and_OTAUpdate_Visuals_Video.mp4" controls>
+  Your browser does not support the video tag.
+</video>
 
 ## Libraries
 

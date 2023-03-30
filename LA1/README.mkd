@@ -172,6 +172,7 @@ These instructions will guide you through the process of updating your ESP devic
     - Open the serial monitor in your programming software and select the correct port.
 
 9. Wait for the update to complete:
+    - Press the button on the breadboard to start the updating process.
     - The ESP board will connect to the Python server and download the new firmware.
     - Wait for the update to complete.
 

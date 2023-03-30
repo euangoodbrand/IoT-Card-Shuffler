@@ -4,6 +4,11 @@
 
 This C++ code is designed for an ESP32 microcontroller to provide WiFi provisioning and over-the-air (OTA) firmware updates. The code sets up an access point (AP) using the ESP32, which users can connect to in order to configure the device with their WiFi credentials. Once connected, the device can perform OTA firmware updates using a provided firmware server.
 
+## Setup
+
+![Setup with labels](setup_labelled.png)
+
+
 ## Libraries
 
 The code utilizes the following libraries:
@@ -57,6 +62,36 @@ The following functions are defined in the code:
 4. The device connects to the specified WiFi network and displays its IP address. 
 5. The user presses a button connected to GPIO pin 5, triggering the OTA update process.
 6. The device checks the firmware server for updates and downloads and installs the new firmware if necessary. LED indicators show the update progress and success or failure.
+
+
+
+## Testing
+
+This project has undergone testing to ensure that it is reliable. Several types of testing have been employed, including:
+
+# Reliable Libraries
+
+This project uses several reliable libraries such as WiFi, WebServer, HTTPClient, and Update. These libraries have been tested by many developers and are known to be reliable and stable.
+
+# Constants
+
+Constants for the firmware version, the IP address, and the port number of the firmware server have been defined in this project. This makes it easy to change these values if necessary, without having to go through the entire code.
+
+# WiFi Access Point
+
+A WiFi access point (AP) with a unique SSID and a secure password has been created in this project. This allows users to connect to the ESP32 and enter their own WiFi credentials to connect to their local network.
+
+# Web Interface
+
+A web interface has been implemented in this project, which allows users to enter their WiFi credentials. The interface also displays a list of available networks, making it easy for users to select the correct network.
+
+# LED Indicators
+
+LED indicators have been implemented in this project, which provide visual feedback to the user. The LEDs are turned on and off based on the current state of the ESP32, making it easy for users to understand what is happening.
+
+# Error Handling
+
+Error handling has been implemented in this project to handle cases where the ESP32 fails to connect to the network or when an OTA update fails. This prevents the ESP32 from getting stuck in a loop and makes it easier to diagnose and fix errors.
 
 ## Notes
 

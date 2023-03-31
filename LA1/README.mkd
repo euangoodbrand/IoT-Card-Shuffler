@@ -112,26 +112,26 @@ Error handling has been implemented in this project to handle cases where the ES
 
 These instructions will guide you through the process of provisioning your ESP device, so that it can connect to your WiFi network and become accessible via its own access point.
 
-**1. Put the ESP into bootloader mode:**
+1. **Put the ESP into bootloader mode:**
     - Hold down the "boot" button on the ESP board, then press the "reset" button.
     - Release the "reset" button, then release the "boot" button.
 
-**2. Burn the code onto the ESP:**
+2. **Burn the code onto the ESP:**
     - Use your preferred method to burn the code onto the ESP board.
 
-**3. Connect to your computer and select the relevant port:**
+3. **Connect to your computer and select the relevant port:**
     - Connect your ESP board to your computer via USB.
     - Select the relevant port in your programming software.
     - Press the "reset" button to run the code.
 
-**4. Connect to the access point created by the ESP:**
+4. **Connect to the access point created by the ESP:**
     - The ESP will create its own access point, which you can connect to.
     - Define a name and password for the access point.
 
-**5. View the website from the ESP:**
+5. **View the website from the ESP:**
     - In a web browser, go to the URL http://192.168.4.1 to view the website hosted by the ESP.
 
-**6. Enter your WiFi credentials:**
+6. **Enter your WiFi credentials:**
     - Type in the WiFi credentials that you want the ESP to connect to.
     - Make sure that your firewall is not blocking this connection.
 
@@ -139,39 +139,39 @@ These instructions will guide you through the process of provisioning your ESP d
 
 These instructions will guide you through the process of updating your ESP device over the air (OTA), using a Python server and compiled binary files.
 
-**1. Ensure that your computer and ESP are on the same WiFi network:**
+1. **Ensure that your computer and ESP are on the same WiFi network:**
     - Connect your computer and ESP to the same WiFi network.
     - You can use a hotspot if you prefer.
 
-**2. Find the IPv4 address of your computer's wireless LAN:**
+2. **Find the IPv4 address of your computer's wireless LAN:**
     - Open a new terminal and type "ipconfig".
     - Look for the IPv4 address under the "Wireless LAN" section.
 
-**3. Start a Python server:**
+3. **Start a Python server:**
     - Open another terminal window and type "python -m http.server 8000".
     - This will start a server that listens on port 8000.
 
-**4. Upload the sketch.ino file:**
+4. **Upload the sketch.ino file:**
     - Use your preferred method to upload the sketch.ino file to your ESP board.
 
-**5. Increment the firmware version:**
+5. **Increment the firmware version:**
     - Go to "Sketch" > "Export compiled binary" in your programming software.
     - Save the binary file as "N.bin", where "N" is the version number you are updating to.
     - Increment the version number in your sketch.
 
-**6. Save the binary file to the Python server directory:**
+6. **Save the binary file to the Python server directory:**
     - Save the binary file to the directory where you ran the Python server (step 3).
     - Save it as "N.bin", where "N" is the version number you are updating to.
 
-**7. Add a version.txt file:**
+7. **Add a version.txt file:**
     - Create a file called "version.txt" in the same directory as the binary file.
     - Inside the file, add the integer version number that you are updating to.
 
-**8. Reset the ESP board and open the serial monitor:**
+8. **Reset the ESP board and open the serial monitor:**
     - Reset the ESP board by pressing the "reset" button.
     - Open the serial monitor in your programming software and select the correct port.
 
-**9. Wait for the update to complete:**
+9. **Wait for the update to complete:**
     - Press the button on the breadboard to start the updating process.
     - The ESP board will connect to the Python server and download the new firmware.
     - Wait for the update to complete.

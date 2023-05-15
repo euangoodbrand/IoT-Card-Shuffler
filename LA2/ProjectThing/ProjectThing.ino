@@ -1,13 +1,18 @@
 // Import required libraries
-
 #include <WiFi.h>
 #include <aREST.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
 
+// HC-SR04 Sensor declarations
+#define trigPin 17  // connected to A2_I34
+#define echoPin 16  // connected to A1_DAC1
+#define led 10  // some GPIO pin for LED1
+#define led2 6  // some GPIO pin for LED2
+
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
- 
+
 // And connect 2 DC motors to port M3 & M4 !
 Adafruit_DCMotor *L_MOTOR = AFMS.getMotor(4);
 Adafruit_DCMotor *R_MOTOR = AFMS.getMotor(3);
@@ -30,6 +35,21 @@ int stop(String message);
 int oppositeConstant(String message);
 int alternating(String message);
 int randomMotion(String message);
+// int detectJamming();
+
+int stop(String command) {
+  Serial.println("Stopping");
+  // Stop both motors
+  L_MOTOR->setSpeed(0);
+  L_MOTOR->run(RELEASE);
+
+  R_MOTOR->setSpeed(0);
+  R_MOTOR->run(RELEASE);
+
+  return 1;
+}
+
+
 
 
 void setup(void)
@@ -40,11 +60,18 @@ void setup(void)
   // Init motor shield
   AFMS.begin();  
 
+  // Init Ultrasonic Sensor
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  pinMode(led, OUTPUT);
+  pinMode(led2, OUTPUT);
+
   // Functions          
   rest.function("stop", stop);
   rest.function("oppositeConstant", oppositeConstant);
   rest.function("alternating", alternating);
   rest.function("randomMotion", randomMotion);
+  // rest.function("detectJamming", detectJamming);
       
   // Give name and ID to device
   rest.set_id("1");
@@ -79,21 +106,36 @@ void loop() {
     delay(1);
   }
   rest.handle(client);
- 
-}
 
-int stop(String command) {
-  Serial.println("Stop");
-  // Stop
-  L_MOTOR->setSpeed(0);
-  L_MOTOR->run( RELEASE );
- 
-  R_MOTOR->setSpeed(0);
-  R_MOTOR->run( RELEASE );
-
-  return 1;
+  // Ultrasonic jamming detection
+  long duration, distance;
+  digitalWrite(trigPin, LOW);  
+  delayMicroseconds(2); 
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10); 
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = (duration/2) / 29.1;
   
+  // Print distance to the serial monitor
+  Serial.print("Distance: ");
+  Serial.print(distance);
+  Serial.println(" cm");
+  
+  if (distance < 4) {  // This is where the jamming detection happens
+    digitalWrite(led,HIGH); // Red LED turns on when a jam is detected
+    digitalWrite(led2,LOW);
+    stop("jam");  // Stop all motors if a jam is detected
+  }
+  else {
+    digitalWrite(led,LOW);
+    digitalWrite(led2,HIGH); // Green LED turns on when there's no jam
+  }
+  delay(500); // Wait for half a second before next detection
+ 
 }
+
+
 
 int oppositeConstant(String command) {
   Serial.println("Constant");

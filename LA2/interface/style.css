@@ -1,0 +1,36 @@
+body {
+  font-size: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.row {
+  margin-top: 25px;
+}
+
+#slider {
+  margin-top: 7px;
+  vertical-align:middle;
+}
+
+/* Button styling */
+.btn {
+  font-size: 1.3em;  /* Reduced font size */
+  background: linear-gradient(to right, #fc5c7d, #6a82fb);
+  border: none;
+  padding: 15px 30px;
+  color: white;
+  border-radius: 50px;
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  width: auto;  /* Button width is adjusted automatically based on the text */
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 15px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: 0px 10px 10px rgba(0, 0, 0, 0.2);
+}

@@ -3,6 +3,13 @@
 #include <aREST.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
+#include <HTTPClient.h>
+#include <Update.h>
+
+// Define the firmware version and the server from which to fetch updates
+#define FIRMWARE_VERSION 1
+#define FIRMWARE_SERVER_IP_ADDR "172.20.10.7"
+#define FIRMWARE_SERVER_PORT    "8000"
 
 // HC-SR04 Sensor declarations
 #define trigPin 17  // connected to A2_I34
@@ -36,6 +43,8 @@ int oppositeConstant(String message);
 int alternating(String message);
 int randomMotion(String message);
 // int detectJamming();
+void performOTAUpdate();
+
 
 int stop(String command) {
   Serial.println("Stopping");
@@ -92,6 +101,9 @@ void setup(void)
   
   // Print the IP address
   Serial.println(WiFi.localIP());
+
+  // Check for updates after setting up the WiFi
+  performOTAUpdate();
   
 }
 
@@ -205,4 +217,43 @@ int randomMotion(String command) {
   R_MOTOR->run(RELEASE);
 
   return 1;
+}
+
+void performOTAUpdate() {
+  Serial.println("Checking for firmware updates...");
+  HTTPClient http;
+
+  // Specify the URL for the firmware update
+  String firmwareUrl = String("http://") + FIRMWARE_SERVER_IP_ADDR + ":" + FIRMWARE_SERVER_PORT + "/firmware.bin";
+  
+  http.begin(firmwareUrl);
+  int httpCode = http.GET();
+  if (httpCode > 0) {
+    if(httpCode == HTTP_CODE_OK) {
+      int contentLength = http.getSize();
+
+      // Start OTA Update
+      if (Update.begin(contentLength)) {
+        WiFiClient * stream = http.getStreamPtr();
+        if (Update.writeStream(*stream) == contentLength) {
+          if (Update.end(true)) {
+            Serial.println("OTA update success!");
+            ESP.restart();
+          } else {
+            Serial.printf("Error: %s\n", Update.errorString());
+          }
+        } else {
+          Serial.println("Unable to read the stream for OTA update.");
+        }
+      } else {
+        Serial.println("Not enough space to start OTA update.");
+      }
+    } else {
+      Serial.printf("Firmware download failed with HTTP code: %d\n", httpCode);
+    }
+  } else {
+    Serial.printf("Unable to connect to the server: %s\n", http.errorToString(httpCode).c_str());
+  }
+
+  http.end();
 }

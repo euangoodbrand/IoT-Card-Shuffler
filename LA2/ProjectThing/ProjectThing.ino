@@ -270,4 +270,3 @@ void performOTAUpdate() {
 
   http.end();
 }
-

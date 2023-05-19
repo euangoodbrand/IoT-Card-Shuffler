@@ -34,5 +34,22 @@ $( document ).ready(function() {
     device.callFunction("stop");
   });
 
+  $('#oppositeConstantForm').submit(function(event) {
+    event.preventDefault(); // prevent the form from submitting normally
+    var numCards = $('#cardsNumber').val();
+    var count = 0;
+    var intervalId = setInterval(function() {
+      $('#cardsShuffledCount').text("Cards shuffled: " + count);
+      count++;
+      if(count > numCards) {
+        clearInterval(intervalId);
+        $('#cardsShuffledCount').text("Shuffling complete!");
+      }
+    }, 1000);  // update the count every second
+    device.callFunction("oppositeConstant", numCards);
+    device.callFunction("stop");
+  });
+  
+
 });
 

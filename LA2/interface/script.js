@@ -11,6 +11,13 @@ $(document).ready(function () {
       $('#shufflingSpeedValue').text("Shuffling Speed: " + shufflingSpeed);
   });
 
+  function calculateInterval(shufflingSpeed) {
+    var baseSpeed = 200;  // this value seems to work well for your setup
+    return baseSpeed / (shufflingSpeed / 800); // Adjust this value as per your need
+}
+
+
+
   function runShuffler(functionName, numCards) {
     var parameters = shufflingSpeed + "," + numCards;
     device.callFunction(functionName, parameters)
@@ -21,38 +28,42 @@ $(document).ready(function () {
   
 
   $('#oppositeConstantForm').submit(function (event) {
-      event.preventDefault();
-      var numCards = $('#cardsNumber').val();
-      var count = 0;
-      var intervalId = setInterval(function() {
-          var percentage = Math.round((count / numCards) * 100);
-          $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
-          $('#progressBar').css('width', percentage + '%');
-          count++;
-          if(count > numCards) {
-              clearInterval(intervalId);
-              $('#cardsShuffledCount').text("Shuffling complete!");
-              $('#progressBar').css('width', '100%');
-          }
-      }, 1000);
-      runShuffler("oppositeConstant", numCards);
-  });
+    event.preventDefault();
+    var numCards = $('#cardsNumber').val();
+    var count = 0;
+    var intervalDelay = calculateInterval(shufflingSpeed);
+    var intervalId = setInterval(function() {
+        var percentage = Math.round((count / numCards) * 100);
+        $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
+        $('#progressBar').css('width', percentage + '%');
+        count++;
+        if(count > numCards) {
+            clearInterval(intervalId);
+            $('#cardsShuffledCount').text("Shuffling complete!");
+            $('#progressBar').css('width', '100%');
+        }
+    }, intervalDelay);
+    runShuffler("oppositeConstant", numCards);
+});
 
-  $('#alternating').mousedown(function () {
-      runShuffler("alternating");
-  });
-  $('#alternating').mouseup(function () {
-      device.callFunction("stop");
-  });
+function resetProgressBar() {
+  $('#cardsShuffledCount').text("");
+  $('#progressBar').css('width', '0%');
+}
 
-  $('#randomMotion').mousedown(function () {
-      runShuffler("randomMotion");
-  });
-  $('#randomMotion').mouseup(function () {
-      device.callFunction("stop");
-  });
+$('#alternating').mousedown(function () {
+  resetProgressBar();
+  runShuffler("alternating");
+});
 
-  $('#stop').mousedown(function () {
-      device.callFunction("stop");
-  });
+$('#randomMotion').mousedown(function () {
+  resetProgressBar();
+  runShuffler("randomMotion");
+});
+
+$('#stop').mousedown(function () {
+  resetProgressBar();
+  device.callFunction("stop");
+});
+
 });

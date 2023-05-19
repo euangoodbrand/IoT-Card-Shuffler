@@ -17,12 +17,17 @@
 <h1>Card Shuffler</h1>
 
 <div class='row justify-content-center'>
-
-  <div class="col-md-6">
-    <button id='oppositeConstant' class='btn btn-primary btn-block' type="button">Opposite Constant</button>
+	<div class="col-md-6">
+	  <form id='oppositeConstantForm'>
+		<div class="form-group">
+		  <label for="cardsNumber">Number of Cards:</label>
+		  <input type="number" class="form-control" id="cardsNumber" min="1" required>
+		</div>
+		<button type='submit' id='oppositeConstant' class='btn btn-primary btn-block'>Opposite Constant</button>
+	  </form>
+	</div>
   </div>
-
-</div>
+  
 
 <div class='row justify-content-center'>
 

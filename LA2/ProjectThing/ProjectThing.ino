@@ -148,18 +148,31 @@ void loop() {
 }
 
 
-
 int oppositeConstant(String command) {
   Serial.println("Constant");
-  // Run both motors in opposite directions constantly
+
+  int numCards = command.toInt();  // convert the command to an integer
+  int runTime = numCards * 1000;  // calculate the run time based on the number of cards
+  
+  // Run both motors in opposite directions for the calculated time
   L_MOTOR->setSpeed(200);
-  L_MOTOR->run(FORWARD);
+  L_MOTOR->run(BACKWARD);
  
   R_MOTOR->setSpeed(200);
   R_MOTOR->run(BACKWARD);
 
+  delay(runTime);  // wait for the calculated time
+
+  // Then stop the motors
+  L_MOTOR->setSpeed(0);
+  L_MOTOR->run(RELEASE);
+
+  R_MOTOR->setSpeed(0);
+  R_MOTOR->run(RELEASE);
+
   return 1;
 }
+
 
 int alternating(String command) {
   // Run each motor one after the other in opposite directions on a loop for 1 second each
@@ -257,3 +270,4 @@ void performOTAUpdate() {
 
   http.end();
 }
+

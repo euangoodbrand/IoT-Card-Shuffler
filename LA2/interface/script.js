@@ -8,9 +8,13 @@ $( document ).ready(function() {
   $('#oppositeConstant').mousedown(function() {
     device.callFunction("oppositeConstant");
   });
-  $('#oppositeConstant').mouseup(function() {
+  $('#oppositeConstantForm').submit(function(event) {
+    event.preventDefault(); // prevent the form from submitting normally
+    var numCards = $('#cardsNumber').val();
+    device.callFunction("oppositeConstant", numCards);
     device.callFunction("stop");
   });
+  
 
   $('#alternating').mousedown(function() {
     device.callFunction("alternating");

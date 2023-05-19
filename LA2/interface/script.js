@@ -16,35 +16,41 @@ $(document).ready(function () {
     return baseSpeed / (shufflingSpeed / 800); // Adjust this value as per your need
 }
 
+function calculateTime(numCards, shufflingSpeed) {
+  var baseTime = numCards * (200 / 200); // Time for speed 200
+  return baseTime * (200 / shufflingSpeed); // Adjusted time for current speed
+}
 
 
-  function runShuffler(functionName, numCards) {
-    var parameters = shufflingSpeed + "," + numCards;
+function runShuffler(functionName, numCards, calculatedTime) {
+    var parameters = shufflingSpeed + "," + calculatedTime;
     device.callFunction(functionName, parameters)
         .then(function() {
             device.callFunction("stop");
         });
-  }
-  
+}
 
-  $('#oppositeConstantForm').submit(function (event) {
-    event.preventDefault();
-    var numCards = $('#cardsNumber').val();
-    var count = 0;
-    var intervalDelay = calculateInterval(shufflingSpeed);
-    var intervalId = setInterval(function() {
-        var percentage = Math.round((count / numCards) * 100);
-        $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
-        $('#progressBar').css('width', percentage + '%');
-        count++;
-        if(count > numCards) {
-            clearInterval(intervalId);
-            $('#cardsShuffledCount').text("Shuffling complete!");
-            $('#progressBar').css('width', '100%');
-        }
-    }, intervalDelay);
-    runShuffler("oppositeConstant", numCards);
+$('#oppositeConstantForm').submit(function (event) {
+  event.preventDefault();
+  var numCards = $('#cardsNumber').val();
+  var intervalDelay = calculateInterval(shufflingSpeed);
+  var calculatedTime = calculateTime(numCards, shufflingSpeed);
+  var count = 0;
+  var intervalId = setInterval(function() {
+      var percentage = Math.round((count / numCards) * 100);
+      $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
+      $('#progressBar').css('width', percentage + '%');
+      count++;
+      if(count > numCards) {
+          clearInterval(intervalId);
+          $('#cardsShuffledCount').text("Shuffling complete!");
+          $('#progressBar').css('width', '100%');
+      }
+  }, intervalDelay);
+  runShuffler("oppositeConstant", numCards, calculatedTime);
 });
+
+
 
 function resetProgressBar() {
   $('#cardsShuffledCount').text("");

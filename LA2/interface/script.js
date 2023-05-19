@@ -5,17 +5,24 @@ $( document ).ready(function() {
   var device = new Device(address);
 
   // Buttons
-  $('#oppositeConstant').mousedown(function() {
-    device.callFunction("oppositeConstant");
-  });
   $('#oppositeConstantForm').submit(function(event) {
     event.preventDefault(); // prevent the form from submitting normally
     var numCards = $('#cardsNumber').val();
-    device.callFunction("oppositeConstant", numCards);
-    device.callFunction("stop");
+    var count = 0;
+    var intervalId = setInterval(function() {
+      $('#cardsShuffledCount').text("Cards shuffled: " + count);
+      count++;
+      if(count > numCards) {
+        clearInterval(intervalId);
+        $('#cardsShuffledCount').text("Shuffling complete!");
+      }
+    }, 1000);  // update the count every second
+    device.callFunction("oppositeConstant", numCards)
+      .then(function() {
+          device.callFunction("stop");
+      });
   });
   
-
   $('#alternating').mousedown(function() {
     device.callFunction("alternating");
   });
@@ -34,22 +41,7 @@ $( document ).ready(function() {
     device.callFunction("stop");
   });
 
-  $('#oppositeConstantForm').submit(function(event) {
-    event.preventDefault(); // prevent the form from submitting normally
-    var numCards = $('#cardsNumber').val();
-    var count = 0;
-    var intervalId = setInterval(function() {
-      $('#cardsShuffledCount').text("Cards shuffled: " + count);
-      count++;
-      if(count > numCards) {
-        clearInterval(intervalId);
-        $('#cardsShuffledCount').text("Shuffling complete!");
-      }
-    }, 1000);  // update the count every second
-    device.callFunction("oppositeConstant", numCards);
-    device.callFunction("stop");
-  });
-  
+
 
 });
 

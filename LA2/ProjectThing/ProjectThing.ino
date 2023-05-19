@@ -151,14 +151,20 @@ void loop() {
 int oppositeConstant(String command) {
   Serial.println("Constant");
 
-  int numCards = command.toInt();  // convert the command to an integer
-  int runTime = numCards * 1000;  // calculate the run time based on the number of cards
+  int commaIndex = command.indexOf(',');
+  String speedStr = command.substring(0, commaIndex);
+  String numCardsStr = command.substring(commaIndex + 1);
+
+  int speed = speedStr.toInt();
+  int numCards = numCardsStr.toInt();
+  int runTime = numCards * 1000;
+
   
   // Run both motors in opposite directions for the calculated time
-  L_MOTOR->setSpeed(200);
+  L_MOTOR->setSpeed(speed);
   L_MOTOR->run(BACKWARD);
  
-  R_MOTOR->setSpeed(200);
+  R_MOTOR->setSpeed(speed);
   R_MOTOR->run(BACKWARD);
 
   delay(runTime);  // wait for the calculated time
@@ -178,14 +184,21 @@ int alternating(String command) {
   // Run each motor one after the other in opposite directions on a loop for 1 second each
   for (int i = 0; i < 5; i++) { // adjust the number of iterations as needed
     Serial.println("Alternating");
-    L_MOTOR->setSpeed(200);
+    int commaIndex = command.indexOf(',');
+    String speedStr = command.substring(0, commaIndex);
+    String numCardsStr = command.substring(commaIndex + 1);
+
+    int speed = speedStr.toInt();
+    int numCards = numCardsStr.toInt();
+    int runTime = numCards * 1000;
+
+    L_MOTOR->setSpeed(speed);
     L_MOTOR->run(FORWARD);
     R_MOTOR->setSpeed(0);
     R_MOTOR->run(RELEASE);
 
     delay(1000); // wait for 1 second
-
-    R_MOTOR->setSpeed(200);
+    R_MOTOR->setSpeed(speed);
     R_MOTOR->run(BACKWARD);
     L_MOTOR->setSpeed(0);
     L_MOTOR->run(RELEASE);
@@ -207,14 +220,22 @@ int randomMotion(String command) {
   for (int i = 0; i < 5; i++) { // adjust the number of iterations as needed
     Serial.println("Random");
     int randomMotor = random(0, 2); // generates either 0 or 1
-    
+    int commaIndex = command.indexOf(',');
+    String speedStr = command.substring(0, commaIndex);
+    String numCardsStr = command.substring(commaIndex + 1);
+
+    int speed = speedStr.toInt();
+    int numCards = numCardsStr.toInt();
+    int runTime = numCards * 1000;
+
+
     if (randomMotor == 0) {
-      L_MOTOR->setSpeed(200);
+      L_MOTOR->setSpeed(speed);
       L_MOTOR->run(FORWARD);
       R_MOTOR->setSpeed(0);
       R_MOTOR->run(RELEASE);
     } else {
-      R_MOTOR->setSpeed(200);
+      R_MOTOR->setSpeed(speed);
       R_MOTOR->run(BACKWARD);
       L_MOTOR->setSpeed(0);
       L_MOTOR->run(RELEASE);

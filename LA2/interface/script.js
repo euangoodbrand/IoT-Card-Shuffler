@@ -17,7 +17,7 @@ $(document).ready(function () {
 }
 
 function calculateTime(numCards, shufflingSpeed) {
-  var baseTime = numCards * (200 / 200); // Time for speed 200
+  var baseTime = numCards * (200 / 1000); // Time for speed 200
   return baseTime * (200 / shufflingSpeed); // Adjusted time for current speed
 }
 

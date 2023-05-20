@@ -52,24 +52,51 @@ $('#oppositeConstantForm').submit(function (event) {
 
 
 
-function resetProgressBar() {
-  $('#cardsShuffledCount').text("");
-  $('#progressBar').css('width', '0%');
-}
-
 $('#alternating').mousedown(function () {
   resetProgressBar();
   var numCards = $('#cardsNumber').val();
+  var intervalDelay = calculateInterval(shufflingSpeed);
   var calculatedTime = calculateTime(numCards, shufflingSpeed);
+  var count = 0;
+  var intervalId = setInterval(function() {
+      var percentage = Math.round((count / numCards) * 100);
+      $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
+      $('#progressBar').css('width', percentage + '%');
+      count++;
+      if(count > numCards) {
+          clearInterval(intervalId);
+          $('#cardsShuffledCount').text("Shuffling complete!");
+          $('#progressBar').css('width', '100%');
+      }
+  }, intervalDelay);
   runShuffler("alternating", numCards, calculatedTime);
 });
 
 $('#randomMotion').mousedown(function () {
   resetProgressBar();
   var numCards = $('#cardsNumber').val();
+  var intervalDelay = calculateInterval(shufflingSpeed);
   var calculatedTime = calculateTime(numCards, shufflingSpeed);
+  var count = 0;
+  var intervalId = setInterval(function() {
+      var percentage = Math.round((count / numCards) * 100);
+      $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
+      $('#progressBar').css('width', percentage + '%');
+      count++;
+      if(count > numCards) {
+          clearInterval(intervalId);
+          $('#cardsShuffledCount').text("Shuffling complete!");
+          $('#progressBar').css('width', '100%');
+      }
+  }, intervalDelay);
   runShuffler("randomMotion", numCards, calculatedTime);
 });
+
+
+function resetProgressBar() {
+  $('#cardsShuffledCount').text("");
+  $('#progressBar').css('width', '0%');
+}
 
 
 $('#stop').mousedown(function () {

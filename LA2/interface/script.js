@@ -92,6 +92,34 @@ $('#randomMotion').mousedown(function () {
   runShuffler("randomMotion", numCards, calculatedTime);
 });
 
+$('#customShuffleForm').submit(function (event) {
+  event.preventDefault();
+  var numLeftCards = $('#leftCardsNumber').val();
+  var numRightCards = $('#rightCardsNumber').val();
+  var intervalDelay = calculateInterval(shufflingSpeed);
+  var calculatedTimeLeft = calculateTime(numLeftCards, shufflingSpeed);
+  var calculatedTimeRight = calculateTime(numRightCards, shufflingSpeed);
+  var totalCards = Number(numLeftCards) + Number(numRightCards);  // Total number of cards for progress bar
+  var count = 0;
+  var intervalId = setInterval(function() {
+    var percentage = Math.round((count / totalCards) * 100);
+    $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
+    $('#progressBar').css('width', percentage + '%');
+    count++;
+    if(count > totalCards) {
+      clearInterval(intervalId);
+      $('#cardsShuffledCount').text("Shuffling complete!");
+      $('#progressBar').css('width', '100%');
+    }
+  }, intervalDelay);
+  var parameters = shufflingSpeed + "," + numLeftCards + "," + numRightCards;
+  device.callFunction("customShuffle", parameters)
+    .then(function() {
+      device.callFunction("stop");
+    });
+});
+
+
 
 function resetProgressBar() {
   $('#cardsShuffledCount').text("");

@@ -42,6 +42,7 @@ int stop(String message);
 int oppositeConstant(String message);
 int alternating(String message);
 int randomMotion(String message);
+int customShuffle(String command);
 // int detectJamming();
 void performOTAUpdate();
 
@@ -80,6 +81,7 @@ void setup(void)
   rest.function("oppositeConstant", oppositeConstant);
   rest.function("alternating", alternating);
   rest.function("randomMotion", randomMotion);
+  rest.function("customShuffle", customShuffle);
   // rest.function("detectJamming", detectJamming);
       
   // Give name and ID to device
@@ -257,6 +259,57 @@ int randomMotion(String command) {
 
   return 1;
 }
+
+int customShuffle(String command) {
+  Serial.println("Custom Shuffling");
+
+  int commaIndex = command.indexOf(',');
+  String speedStr = command.substring(0, commaIndex);
+  String cardsStr = command.substring(commaIndex + 1);
+
+  commaIndex = cardsStr.indexOf(',');
+  String numLeftCardsStr = cardsStr.substring(0, commaIndex);
+  String numRightCardsStr = cardsStr.substring(commaIndex + 1);
+
+  int shufflingSpeed = speedStr.toInt();
+  int numLeftCards = numLeftCardsStr.toInt();
+  int numRightCards = numRightCardsStr.toInt();
+
+  unsigned long runTimeLeft = numLeftCards * 1000;
+  unsigned long runTimeRight = numRightCards * 1000;
+
+  int totalShuffles = numLeftCards + numRightCards;
+  int currentShuffle = 0;
+  while (currentShuffle < totalShuffles) {
+    // Left Motor Shuffle
+    if (currentShuffle < numLeftCards) {
+      unsigned long startTime = millis();
+      while (millis() - startTime < runTimeLeft) {
+        L_MOTOR->setSpeed(shufflingSpeed);
+        L_MOTOR->run(FORWARD);
+      }
+      L_MOTOR->run(RELEASE);
+    }
+
+    delay(1000);  // Delay time between running motors
+
+    // Right Motor Shuffle
+    if (currentShuffle < numRightCards) {
+      unsigned long startTime = millis();
+      while (millis() - startTime < runTimeRight) {
+        R_MOTOR->setSpeed(shufflingSpeed);
+        R_MOTOR->run(FORWARD);
+      }
+      R_MOTOR->run(RELEASE);
+    }
+
+    currentShuffle++;
+  }
+
+  return 1;
+}
+
+
 
 
 void performOTAUpdate() {

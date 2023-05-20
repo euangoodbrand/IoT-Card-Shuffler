@@ -13,8 +13,9 @@ $(document).ready(function () {
 
   function calculateInterval(shufflingSpeed) {
     var baseSpeed = 200;  
-    return baseSpeed / (shufflingSpeed / 800); 
-}
+    return (baseSpeed / (shufflingSpeed / 800)) / 5; 
+  }
+  
 
 function calculateTime(numCards, shufflingSpeed) {
   var baseTime = numCards * (200 / 1000); // Time for speed 200

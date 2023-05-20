@@ -30,7 +30,7 @@ function runShuffler(functionName, numCards, calculatedTime) {
         });
 }
 
-$('#oppositeConstantForm').submit(function (event) {
+$('#oppositeConstant').click(function (event) {
   event.preventDefault();
   var numCards = $('#cardsNumber').val();
   var intervalDelay = calculateInterval(shufflingSpeed);
@@ -92,7 +92,7 @@ $('#randomMotion').mousedown(function () {
   runShuffler("randomMotion", numCards, calculatedTime);
 });
 
-$('#customShuffleForm').submit(function (event) {
+$('#customShuffle').click(function (event) {
   event.preventDefault();
   var numLeftCards = $('#leftCardsNumber').val();
   var numRightCards = $('#rightCardsNumber').val();

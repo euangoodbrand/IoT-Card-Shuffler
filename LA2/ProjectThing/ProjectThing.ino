@@ -1,5 +1,6 @@
 // Import required libraries
 #include <WiFi.h>
+#include <WebServer.h>
 #include <aREST.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
@@ -11,11 +12,19 @@
 #define FIRMWARE_SERVER_IP_ADDR "172.20.10.7"
 #define FIRMWARE_SERVER_PORT    "8000"
 
+// Access point (AP) settings
+const char *apSSID = "MyESP32AP";
+const char *apPassword = "mypassword";
+
 // HC-SR04 Sensor declarations
 #define trigPin 17  // connected to A2_I34
 #define echoPin 16  // connected to A1_DAC1
 #define led 10  // some GPIO pin for LED1
 #define led2 6  // some GPIO pin for LED2
+
+WebServer server(80);
+
+bool startOTAUpdate = false;
 
 // Create the motor shield object with the default I2C address
 Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
@@ -32,10 +41,10 @@ const char* ssid = "iPhone";
 const char* password = "password555";
 
 // The port to listen for incoming TCP connections 
-#define LISTEN_PORT           80
+// #define LISTEN_PORT           80
 
-// Create an instance of the server
-WiFiServer server(LISTEN_PORT);
+// // Create an instance of the server
+// WiFiServer server(LISTEN_PORT);
 
 // Function
 int stop(String message);
@@ -60,10 +69,76 @@ int stop(String command) {
 }
 
 
+// Handle root URL for displaying available WiFi networks and a form to enter credentials
+void handleRoot() {
+  String html = "<html><head><title>ESP32 Provisioning</title></head>";
+  html += "<body><h1>Available WiFi Networks:</h1>";
+
+  int n = WiFi.scanNetworks();
+  if (n == 0) {
+    html += "<p>No networks found.</p>";
+  } else {
+    html += "<ul>";
+    for (int i = 0; i < n; i++) {
+      html += "<li>";
+      html += WiFi.SSID(i);
+      html += "</li>";
+    }
+    html += "</ul>";
+  }
+
+  html += "<h2>Enter your WiFi credentials:</h2>";
+  html += "<form method=\"post\" action=\"/connect\">";
+  html += "SSID: <input type=\"text\" name=\"ssid\"><br>";
+  html += "Password: <input type=\"password\" name=\"password\"><br>";
+  html += "<input type=\"submit\" value=\"Connect\">";
+  html += "</form>";
+  html += "</body></html>";
+  server.send(200, "text/html", html);
+}
 
 
-void setup(void)
-{  
+void handleConnect() {
+  String ssid = server.arg("ssid");
+  String password = server.arg("password");
+
+  WiFi.mode(WIFI_AP_STA);
+  WiFi.begin(ssid.c_str(), password.c_str());
+
+  unsigned long startTime = millis();
+  unsigned long connectionTimeout = 20000; // 20 seconds timeout
+
+  while (WiFi.status() != WL_CONNECTED) {
+    if (millis() - startTime > connectionTimeout) {
+      Serial.println("Connection timed out.");
+      server.sendHeader("Location", "/", true);
+      server.send(302, "text/plain", "Failed to connect to WiFi. Redirecting...");
+      return;
+    }
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+
+  // Display the IP address
+  Serial.print("Successfully connected to the WiFi network. IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  String html = "<html><head><title>ESP32 Provisioning</title></head>";
+  html += "<body><h1>Connected to WiFi:</h1>";
+  html += "<p>SSID: ";
+  html += ssid;
+  html += "</p><p>IP address: ";
+  html += WiFi.localIP().toString();
+  html += "</p>";
+  html += "<p>Press the button connected to the breadboard to start the OTA update.</p>";
+  html += "</body></html>";
+  server.send(200, "text/html", html);
+}
+
+
+
+
+void setup() {
   // Start Serial
   Serial.begin(115200);
 
@@ -83,43 +158,29 @@ void setup(void)
   rest.function("randomMotion", randomMotion);
   rest.function("customShuffle", customShuffle);
   // rest.function("detectJamming", detectJamming);
-      
+  
   // Give name and ID to device
   rest.set_id("1");
   rest.set_name("card_shuffler");
   
-  // Connect to WiFi
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
-  }
-  Serial.println("");
-  Serial.println("WiFi connected");
- 
-  // Start the server
+  // Set up the access point
+  WiFi.mode(WIFI_AP);
+  WiFi.softAP(apSSID, apPassword);
+  
+  server.on("/", handleRoot);
+  server.on("/connect", HTTP_POST, handleConnect);
   server.begin();
-  Serial.println("Server started");
-  
-  // Print the IP address
-  Serial.println(WiFi.localIP());
-
-  // Check for updates after setting up the WiFi
-  performOTAUpdate();
-  
 }
 
 void loop() {
-  
   // Handle REST calls
-  WiFiClient client = server.available();
-  if (!client) {
-    return;
+  server.handleClient();
+
+  // Check for OTA updates
+  if (startOTAUpdate) {
+    startOTAUpdate = false;
+    performOTAUpdate();
   }
-  while(!client.available()){
-    delay(1);
-  }
-  rest.handle(client);
 
   // Ultrasonic jamming detection
   long duration, distance;
@@ -146,7 +207,6 @@ void loop() {
     digitalWrite(led2,HIGH); // Green LED turns on when there's no jam
   }
   delay(500); // Wait for half a second before next detection
- 
 }
 
 

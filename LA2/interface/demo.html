@@ -18,65 +18,71 @@
 
 <div class="progress">
 	<div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
-  </div>
+</div>
   
 
-<div class='row justify-content-center'>
+<div class='row'>
 	<div class="col-md-6">
 	  <p id="cardsShuffledCount">Cards shuffled: 0</p>
-	  <form id='oppositeConstantForm'>
-		<div class="form-group">
-		  <label for="cardsNumber">Number of Cards:</label>
-		  <input type="number" class="form-control" id="cardsNumber" min="1" required>
-		</div>
-		<button type='submit' id='oppositeConstant' class='btn btn-primary btn-block'>Opposite Constant</button>
-	  </form>
 	</div>
-  </div>
-  
-<div class='row justify-content-center'>
-
-	<div class="col-md-6">
-		<button id='alternating' class='btn btn-primary btn-block' type="button">Alternating</button>
-	</div>
-
-</div>
-
-<div class='row justify-content-center'>
-
-	<div class="col-md-6">
-		<button id='randomMotion' class='btn btn-primary btn-block' type="button">Random Motion</button>
-	</div>
-
-</div>
-
-<div class='row justify-content-center'>
     <div class="col-md-6">
-        <form id='customShuffleForm'>
+        <form id='oppositeConstantForm'>
             <div class="form-group">
-                <label for="leftCardsNumber">Number of Left Stack Cards:</label>
-                <input type="number" class="form-control" id="leftCardsNumber" min="1" required>
+                <label for="cardsNumber">Number of Cards:</label>
+                <input type="number" class="form-control" id="cardsNumber" min="1" required>
             </div>
-            <div class="form-group">
-                <label for="rightCardsNumber">Number of Right Stack Cards:</label>
-                <input type="number" class="form-control" id="rightCardsNumber" min="1" required>
-            </div>
-            <button type='submit' id='customShuffle' class='btn btn-primary btn-block'>Custom Shuffle</button>
         </form>
     </div>
 </div>
-
-
-<div class='row justify-content-center'>
-
-  <div class="col-md-6">
-    <button id='stop' class='btn btn-primary btn-block' type="button">Stop</button>
-  </div>
-
+  
+<div class='row'>
+    <div class="col-md-12">
+        <button id='oppositeConstant' class='btn btn-primary btn-block'>Riffle Shuffle</button>
+    </div>
+</div>
+  
+<div class='row'>
+	<div class="col-md-12">
+		<button id='alternating' class='btn btn-primary btn-block' type="button">Cut the Deck</button>
+	</div>
 </div>
 
-<div class='row justify-content-center'>
-    <div class="col-md-6">
+<div class='row'>
+	<div class="col-md-12">
+		<button id='randomMotion' class='btn btn-primary btn-block' type="button">Random Shuffle</button>
+	</div>
+</div>
+
+<div class='row'>
+    <div class="col-md-4">
+        <form id='customShuffleForm'>
+            <div class="form-group">
+                <label for="leftCardsNumber">Left Stack:</label>
+                <input type="number" class="form-control" id="leftCardsNumber" min="1" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form id='customShuffleForm'>
+            <div class="form-group">
+                <label for="rightCardsNumber">Right Stack:</label>
+                <input type="number" class="form-control" id="rightCardsNumber" min="1" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <button id='customShuffle' class='btn btn-primary btn-block'>Custom</button>
+    </div>
+</div>
+
+<div class='row'>
+    <div class="col-md-12">
+        <button id='stop' class='btn btn-primary btn-block' type="button">Stop</button>
+    </div>
+</div>
+
+<div class='row'>
+    <div class="col-md-12">
         <p id="shufflingSpeedValue">Shuffling Speed: 200</p>
         <div class="form-group">
             <label for="shufflingSpeed">Shuffling Speed (Take caution, max 255):</label>
@@ -84,7 +90,6 @@
         </div>
     </div>
 </div>
-
 
 </div>
 

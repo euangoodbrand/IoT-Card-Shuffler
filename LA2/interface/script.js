@@ -12,8 +12,8 @@ $(document).ready(function () {
   });
 
   function calculateInterval(shufflingSpeed) {
-    var baseSpeed = 200;  // this value seems to work well for your setup
-    return baseSpeed / (shufflingSpeed / 800); // Adjust this value as per your need
+    var baseSpeed = 200;  
+    return baseSpeed / (shufflingSpeed / 800); 
 }
 
 function calculateTime(numCards, shufflingSpeed) {
@@ -59,13 +59,18 @@ function resetProgressBar() {
 
 $('#alternating').mousedown(function () {
   resetProgressBar();
-  runShuffler("alternating");
+  var numCards = $('#cardsNumber').val();
+  var calculatedTime = calculateTime(numCards, shufflingSpeed);
+  runShuffler("alternating", numCards, calculatedTime);
 });
 
 $('#randomMotion').mousedown(function () {
   resetProgressBar();
-  runShuffler("randomMotion");
+  var numCards = $('#cardsNumber').val();
+  var calculatedTime = calculateTime(numCards, shufflingSpeed);
+  runShuffler("randomMotion", numCards, calculatedTime);
 });
+
 
 $('#stop').mousedown(function () {
   resetProgressBar();

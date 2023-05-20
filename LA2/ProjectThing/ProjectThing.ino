@@ -181,31 +181,33 @@ int oppositeConstant(String command) {
 
 
 int alternating(String command) {
-  // Run each motor one after the other in opposite directions on a loop for 1 second each
-  for (int i = 0; i < 5; i++) { // adjust the number of iterations as needed
-    Serial.println("Alternating");
-    int commaIndex = command.indexOf(',');
-    String speedStr = command.substring(0, commaIndex);
-    String numCardsStr = command.substring(commaIndex + 1);
+  Serial.println("Alternating");
+  int commaIndex = command.indexOf(',');
+  String speedStr = command.substring(0, commaIndex);
+  String numCardsStr = command.substring(commaIndex + 1);
 
-    int speed = speedStr.toInt();
-    int numCards = numCardsStr.toInt();
-    int runTime = numCards * 1000;
+  int speed = speedStr.toInt();
+  int numCards = numCardsStr.toInt();
+  int runTime = numCards * 1000;
 
+  unsigned long startTime = millis();
+
+  while (millis() - startTime < runTime) {
     L_MOTOR->setSpeed(speed);
     L_MOTOR->run(FORWARD);
     R_MOTOR->setSpeed(0);
     R_MOTOR->run(RELEASE);
 
-    delay(1000); // wait for 1 second
+    delay(runTime / 2); // half of runTime for one motor
+
     R_MOTOR->setSpeed(speed);
     R_MOTOR->run(BACKWARD);
     L_MOTOR->setSpeed(0);
     L_MOTOR->run(RELEASE);
 
-    delay(1000); // wait for 1 second
+    delay(runTime / 2); // half of runTime for the other motor
   }
-  
+
   // Make sure to stop the motors after the loop
   L_MOTOR->setSpeed(0);
   L_MOTOR->run(RELEASE);
@@ -216,18 +218,20 @@ int alternating(String command) {
 }
 
 int randomMotion(String command) {
-  // Run each motor for one second randomly in opposite direction
-  for (int i = 0; i < 5; i++) { // adjust the number of iterations as needed
-    Serial.println("Random");
+  Serial.println("Random");
+  int commaIndex = command.indexOf(',');
+  String speedStr = command.substring(0, commaIndex);
+  String numCardsStr = command.substring(commaIndex + 1);
+
+  int speed = speedStr.toInt();
+  int numCards = numCardsStr.toInt();
+  int runTime = numCards * 1000;
+
+  unsigned long startTime = millis();
+  unsigned long elapsedTime = 0;
+
+  while (elapsedTime < runTime) {
     int randomMotor = random(0, 2); // generates either 0 or 1
-    int commaIndex = command.indexOf(',');
-    String speedStr = command.substring(0, commaIndex);
-    String numCardsStr = command.substring(commaIndex + 1);
-
-    int speed = speedStr.toInt();
-    int numCards = numCardsStr.toInt();
-    int runTime = numCards * 1000;
-
 
     if (randomMotor == 0) {
       L_MOTOR->setSpeed(speed);
@@ -241,7 +245,8 @@ int randomMotion(String command) {
       L_MOTOR->run(RELEASE);
     }
 
-    delay(1000); // wait for 1 second
+    delay(1000); // wait for 1 second each iteration, you can adjust this depending on your requirement
+    elapsedTime = millis() - startTime;
   }
 
   // Make sure to stop the motors after the loop
@@ -252,6 +257,7 @@ int randomMotion(String command) {
 
   return 1;
 }
+
 
 void performOTAUpdate() {
   Serial.println("Checking for firmware updates...");

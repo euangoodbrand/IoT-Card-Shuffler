@@ -268,26 +268,25 @@ int customShuffle(String command) {
   String cardsStr = command.substring(commaIndex + 1);
 
   commaIndex = cardsStr.indexOf(',');
-  String numLeftCardsStr = cardsStr.substring(0, commaIndex);
-  String numRightCardsStr = cardsStr.substring(commaIndex + 1);
+  String numCardsStr = cardsStr.substring(0, commaIndex);
+  String leftRightCardsStr = cardsStr.substring(commaIndex + 1);
+
+  commaIndex = leftRightCardsStr.indexOf(',');
+  String numLeftCardsStr = leftRightCardsStr.substring(0, commaIndex);
+  String numRightCardsStr = leftRightCardsStr.substring(commaIndex + 1);
 
   int shufflingSpeed = speedStr.toInt();
+  int numCards = numCardsStr.toInt(); 
   int numLeftCards = numLeftCardsStr.toInt();
   int numRightCards = numRightCardsStr.toInt();
 
-  unsigned long runTimeLeft = numLeftCards * 1000;
-  unsigned long runTimeRight = numRightCards * 1000;
-
-  int totalShuffles = numLeftCards + numRightCards;
   int currentShuffle = 0;
-  while (currentShuffle < totalShuffles) {
+  while (currentShuffle < numCards) {
     // Left Motor Shuffle
     if (currentShuffle < numLeftCards) {
-      unsigned long startTime = millis();
-      while (millis() - startTime < runTimeLeft) {
-        L_MOTOR->setSpeed(shufflingSpeed);
-        L_MOTOR->run(FORWARD);
-      }
+      L_MOTOR->setSpeed(shufflingSpeed);
+      L_MOTOR->run(FORWARD);
+      delay(1000);
       L_MOTOR->run(RELEASE);
     }
 
@@ -295,11 +294,9 @@ int customShuffle(String command) {
 
     // Right Motor Shuffle
     if (currentShuffle < numRightCards) {
-      unsigned long startTime = millis();
-      while (millis() - startTime < runTimeRight) {
-        R_MOTOR->setSpeed(shufflingSpeed);
-        R_MOTOR->run(FORWARD);
-      }
+      R_MOTOR->setSpeed(shufflingSpeed);
+      R_MOTOR->run(FORWARD);
+      delay(1000);
       R_MOTOR->run(RELEASE);
     }
 
@@ -308,6 +305,7 @@ int customShuffle(String command) {
 
   return 1;
 }
+
 
 
 

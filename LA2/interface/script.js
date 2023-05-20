@@ -38,15 +38,17 @@ $('#oppositeConstant').click(function (event) {
   var calculatedTime = calculateTime(numCards, shufflingSpeed);
   var count = 0;
   var intervalId = setInterval(function() {
-      var percentage = Math.round((count / numCards) * 100);
-      $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
-      $('#progressBar').css('width', percentage + '%');
-      count++;
-      if(count > numCards) {
-          clearInterval(intervalId);
-          $('#cardsShuffledCount').text("Shuffling complete!");
-          $('#progressBar').css('width', '100%');
-      }
+    var percentage = Math.round((count / numCards) * 100);
+    $('#shufflingProgress').text("Shuffling progress: " + percentage + "%");
+    $('#cardsShuffledCount').text("Cards shuffled: " + count);
+    $('#progressBar').css('width', percentage + '%');
+    count++;
+    if(count > numCards) {
+      clearInterval(intervalId);
+      $('#shufflingProgress').text("Shuffling complete!");
+      $('#cardsShuffledCount').text("Cards shuffled: " + numCards);
+      $('#progressBar').css('width', '100%');
+    }
   }, intervalDelay);
   runShuffler("oppositeConstant", numCards, calculatedTime);
 });
@@ -60,15 +62,17 @@ $('#alternating').mousedown(function () {
   var calculatedTime = calculateTime(numCards, shufflingSpeed);
   var count = 0;
   var intervalId = setInterval(function() {
-      var percentage = Math.round((count / numCards) * 100);
-      $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
-      $('#progressBar').css('width', percentage + '%');
-      count++;
-      if(count > numCards) {
-          clearInterval(intervalId);
-          $('#cardsShuffledCount').text("Shuffling complete!");
-          $('#progressBar').css('width', '100%');
-      }
+    var percentage = Math.round((count / numCards) * 100);
+    $('#shufflingProgress').text("Shuffling progress: " + percentage + "%");
+    $('#cardsShuffledCount').text("Cards shuffled: " + count);
+    $('#progressBar').css('width', percentage + '%');
+    count++;
+    if(count > numCards) {
+      clearInterval(intervalId);
+      $('#shufflingProgress').text("Shuffling complete!");
+      $('#cardsShuffledCount').text("Cards shuffled: " + numCards);
+      $('#progressBar').css('width', '100%');
+    }
   }, intervalDelay);
   runShuffler("alternating", numCards, calculatedTime);
 });
@@ -80,15 +84,17 @@ $('#randomMotion').mousedown(function () {
   var calculatedTime = calculateTime(numCards, shufflingSpeed);
   var count = 0;
   var intervalId = setInterval(function() {
-      var percentage = Math.round((count / numCards) * 100);
-      $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
-      $('#progressBar').css('width', percentage + '%');
-      count++;
-      if(count > numCards) {
-          clearInterval(intervalId);
-          $('#cardsShuffledCount').text("Shuffling complete!");
-          $('#progressBar').css('width', '100%');
-      }
+    var percentage = Math.round((count / numCards) * 100);
+    $('#shufflingProgress').text("Shuffling progress: " + percentage + "%");
+    $('#cardsShuffledCount').text("Cards shuffled: " + count);
+    $('#progressBar').css('width', percentage + '%');
+    count++;
+    if(count > numCards) {
+      clearInterval(intervalId);
+      $('#shufflingProgress').text("Shuffling complete!");
+      $('#cardsShuffledCount').text("Cards shuffled: " + numCards);
+      $('#progressBar').css('width', '100%');
+    }
   }, intervalDelay);
   runShuffler("randomMotion", numCards, calculatedTime);
 });
@@ -103,12 +109,14 @@ $('#customShuffle').click(function (event) {
   var count = 0;
   var intervalId = setInterval(function() {
     var percentage = Math.round((count / numCards) * 100);
-    $('#cardsShuffledCount').text("Shuffling progress: " + percentage + "%");
+    $('#shufflingProgress').text("Shuffling progress: " + percentage + "%");
+    $('#cardsShuffledCount').text("Cards shuffled: " + count);
     $('#progressBar').css('width', percentage + '%');
     count++;
-    if(count >= numCards) {
+    if(count > numCards) {
       clearInterval(intervalId);
-      $('#cardsShuffledCount').text("Shuffling complete!");
+      $('#shufflingProgress').text("Shuffling complete!");
+      $('#cardsShuffledCount').text("Cards shuffled: " + numCards);
       $('#progressBar').css('width', '100%');
     }
   }, intervalDelay);

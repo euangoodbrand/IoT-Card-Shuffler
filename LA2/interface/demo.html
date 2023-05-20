@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset=utf-8 />
-	<title>aREST.js Demo</title>
-	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <meta charset=utf-8 />
+  <title>aREST.js Demo</title>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
   <link rel="stylesheet" type="text/css" href="style.css">
-	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/Foliotek/AjaxQ/master/ajaxq.js"></script>
-	<script type="text/javascript" src="https://cdn.rawgit.com/marcoschwartz/aREST.js/master/aREST.js"></script>
-	<script type="text/javascript" src="script.js"></script>
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/Foliotek/AjaxQ/master/ajaxq.js"></script>
+  <script type="text/javascript" src="https://cdn.rawgit.com/marcoschwartz/aREST.js/master/aREST.js"></script>
+  <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
-
 <div class='container'>
+  <h1>Card Shuffler</h1>
+  <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
+  </div>
+  <div class='row'>
+    <div class="col-md-6">
+      <p id="cardsShuffledCount">Cards shuffled: 0</p>
+    </div>
+    <div class="col-md-6">
+      <p id="shufflingProgress"></p>
+    </div>
+  </div>
 
-<h1>Card Shuffler</h1>
-
-<div class="progress">
-	<div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
-</div>
-  
 
 <div class='row'>
-	<div class="col-md-6">
-	  <p id="cardsShuffledCount">Cards shuffled: 0</p>
-	</div>
     <div class="col-md-6">
         <form id='oppositeConstantForm'>
             <div class="form-group">
@@ -74,8 +76,7 @@
 	<div class="col-md-4">
 		<button id='customShuffle' class='btn btn-primary btn-block'>Custom</button>
 	</div>
-	
-	
+</div>
 
 <div class='row'>
     <div class="col-md-12">

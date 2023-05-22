@@ -8,7 +8,7 @@ The software is composed of two components, the aREST Interface and the arduino 
 
 ### aRest Interface Design
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/final_interface.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/aRESR Interface Diagram.png" alt="aREST Interface Design" width="300px">
 </div>
 
 
@@ -82,13 +82,14 @@ There are two motor shaft designs v1 wass found to be less effective than v2, bo
 
 
 <div style="display: flex; justify-content: center;">
-  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="Image 1" width="300px" style="margin-right: 20px;">
-  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="Image 2" width="300px">
+  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="Image 1" height="500px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="Image 2" height="500px">
 </div>
 
 
 **Motor Holders**
 These pieces are designed to house the motors securely, this is so that only the rotation force is applied to the shafts and not the motors or chassis themselves. This ensures the secure and steady rotation of the motors and allows the motors to run at full speed despite the wight of the cards and the top weights. This component is designed to use the small piece sticking out of the motors to securely fasten it inside.
+
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/motor_holders_v2.png" alt="aREST Interface Design" width="300px">
 </div>
@@ -154,6 +155,11 @@ The following constants are defined, use them wisely:
 - The device uses an ultrasonic sensor to detect card jams. If a jam is detected, it stops the motors and turns on the red LED.
 
 ## Provisioning Instructions:
+<div>
+  <img src="./Documentation%20Resources/Wifi_networking_page.png" alt="aREST Interface Design" width="300px">
+</div>
+
+
 The Card Shuffler also has provisioning capability allowing connection to any Wifi and easy setup.
 
 These instructions will guide you through the process of provisioning your ESP device, so that it can connect to your WiFi network and become accessible via its own access point.
@@ -214,15 +220,29 @@ These instructions will guide you through the process of updating your ESP devic
 ### Sensor Testing
 The sensor was tested at various distances measured with a caliper and these expected distances were compared to the actual read distances from te sensor, this showed that the sensor outputted results to the nearest cm. This changed the design direction as originally I has intended to use the ultrasonic sensor for both detecting card james and measuring the height if the stack of cards to determine when to stop shuffling when enough cards were in the stack, however as cards are much thinner than 1cm this couldn't be done. In the end only card jamming detection could be done with the hardware at the resolution.
 
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/sensor_test.png" alt="aREST Interface Design" width="300px">
+</div>
+
 ### Motor Timing Testing for number of Cards Shuffled
 Testing and claibration was done on the  motor timings. It was found that the amount of cards being shuffled was much higher than expected dto the point the motors would continue running even after the maximum amount of cards the chasis could hold had already been shuffled. This called for proper testing and calibration.
 It was found that the amount of cards shuffled was around 5 times as much as expected as shown in the table above, therefore, the code was altered to reduce the motor running duration by a scale of 5. The below table is the resulting number of cards shuffled based off the number inputted and the test was done twice to confirm. This shows that the card shuffler can shuffle the correct amount of cards pretty close to the expected number, further calibration could get the accuracy correct every time but this would require a much longer calibration process to approach  the correct calibrated values which could be done in potential further work.
+<div style="display: flex; justify-content: center;">
+  <img src="./Documentation%20Resources/cards_before_shuffling.png" alt="Image 1" height="500px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/card_calibration.png" alt="Image 2" height="500px">
+</div>
 
 
 ### 3D Printed chasis testing and Iterative Design Process
 Before the motors were added to the design or the motor holders were even desiged various testing has been done to ensure the chasis could shuffle cards before going forward with the electronic or software design and implementation. 
 Multiple iterations of the chasis were made and tested with slow improvements.
 The first iteration was printed at too low a quality and needed to be printed again using a higher resolution, the lower qualtiy caused connections to not fit correctl and the shafts to grind as I cranked them which proved difficult meaning that the motors wouldnt be able to spin them. 
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/3d_printer_settings.png" alt="aREST Interface Design" width="300px">
+</div>
+
+
 After a reprint at 0.1mm layer height there wre other issues, due to the 3D printed bed temperature being too low the PLA material warped heavily causing the chais to not fit together correctly and not sit flat on any surfaces.
 I increased the temperature of the hot bed to 55 degrees celcius and the chassis now fit together correctly and the shafters rotated releatively smoothly, however I noticed the texture of the shafts was rougher than I expected, this was due to 3D printing the shafts horizontally and not vertically meaning the shafters were essentialyl maded of many square cross sections rather than circular ones which is  not good for rotating parts. After reprinting these correctly the chasis worked and the shafts spun smoothly.
 The process was not finished though as the cards did not make contact with the shaft by a few mm,  even adding rubber grips didn't allow the cards to touch. Therefore, I redisgned new shafts and new spacers to house them. This meant the shaft was thicker and now made conact with the cards when rubber grips were added. 

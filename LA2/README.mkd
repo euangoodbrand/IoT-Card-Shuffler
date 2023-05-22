@@ -1,7 +1,7 @@
 
 # Card Shuffler
 
-This is the documentation for a Card Shuffler device, which is controlled over WiFi using an aRest interface and has built-in jamming detection.
+This is the documentation for a Card Shuffler device, which is controlled over Wi-Fi using an aREST interface and has built-in jamming detection.
 
 ## Video Demonstration
 
@@ -12,30 +12,28 @@ This is the documentation for a Card Shuffler device, which is controlled over W
 </figure>
 
 ## Software Design
-The software is composed of two components, the aREST Interface and the arduino code.
+The software is composed of two components, the aREST Interface and the Arduino code.
 
 ### aREST Interface Design
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/aREST Interface Diagram.png" alt="aREST Interface Design" width="600px">
 </div>
 
-
-The aREST interface must be easy to use and intuitive giving visual feedback to the user also. The design must also be simple and only include necessary features, no superfluous features should be on the itnerface and any features added should have a minimal design that is accessible. The interface was desiged to have these features: Buttons for each shuffle (Riffle, Cut, Random and Custom) as well as a stop button. The user should have control over the device therefore, the user can choose thenumber of cards they wish to shuffle, control the speed of the shuffling via a slider and customise their own shuffle (custom shuffle). The slider was used to that the usre doesn' enter a value outside of the motors capacity.
+The aREST interface must be easy to use and intuitive giving visual feedback to the user also. The design must also be simple and only include necessary features, no superfluous features should be on the interface and any features added should have a minimal design that is accessible. The interface was designed to have these features: Buttons for each shuffle (Riffle, Cut, Random and Custom) as well as a stop button. The user should have control over the device therefore, the user can choose the number of cards they wish to shuffle, control the speed of the shuffling via a slider and customise their own shuffle (custom shuffle). The slider was used to that the user doesn’t' enter a value outside of the motors capacity.
 
 ### Arduino code
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/Software diagram.png" alt="aREST Interface Design" width="600px">
 </div>
-The code must be able to interact with the aREST interface as well as perform certain functions. As this is an IoT device it must firstly Connect to WiFi via networking and be able to perform OTA firmware updates.
+The code must be able to interact with the aREST interface as well as perform certain functions. As this is an IoT device it must firstly Connect to Wi-Fi via networking and be able to perform OTA firmware updates.
 The code must also be able to control the  motors in the necessary ways to shuffle a Riffle-Shuffle, Cutting a deck, Random Shuffle and a Custom Shuffle whilst also taking into account the users selected number of cards and shuffling speed in any calculations.
 The device also has an ultrasonic sensor, the code must stop all the motors whenever a distance below a certain threshold is detected which would be a card jam, the motors need to stop to ensure  no card damage is caused. Any necessary information should also be printed to the serial monitor or given to the user on the aREST interface. The code must also  incorporate a button to start Firmware updates and LEDs to inform the user of card jams detected.
-
 
 ## Hardware Design
 
 The following components were used in the hardware design of the card shuffler project:
 
-- Adafruit ESP32 Featherboard: The main microcontroller for this project, running the main logic and controlling the other hardware components. It's a powerful board with built-in WiFi capabilities.
+- Adafruit ESP32 Featherboard: The main microcontroller for this project, running the main logic and controlling the other hardware components. It's a powerful board with built-in Wi-Fi capabilities.
 
 - Adafruit Motor Shield: This is used to control the DC motors which power the card shuffling mechanism. (Motor setup instructions were found here: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-a-robocar.mkd)
 
@@ -47,53 +45,50 @@ The following components were used in the hardware design of the card shuffler p
 
 - Breadboard: Used for prototyping and connecting the various components.
 
-These components are connected together along with the 3D printed chasis as shown in the relevant images in the connections section
+These components are connected together along with the 3D printed chassis as shown in the relevant images in the connections section
 
 ### Connections
 
-
 ## 3D Printed Chassis
 
-The main structure of the card shuffler is a 3D printed chassis, designed to hold the cards and incorporate the mechanical parts needed for shuffling. The design should be simplistic and immediatley obvious to the user how it functions sucuh as where to put the cards. 
+The main structure of the card shuffler is a 3D printed chassis, designed to hold the cards and incorporate the mechanical parts needed for shuffling. The design should be simplistic and immediately obvious to the user how it functions such as where to put the cards. 
 
 ### Chassis Design
-The components were designed using Fusion 360 software and printed using a P1P Bambu Labs 3D printer using Bambhu Studio Slicer Software. All components were designed usign measuremets from a digital vernier caliperso that they have a high resolution of +- 0.05 mm. The 3D printer has a resolution of 0.1mm vertically and 0.4mm horizontally.
+The components were designed using Fusion 360 software and printed using a P1P Bambu Labs 3D printer using Bambu Studio Slicer Software. All components were designed using measurements from a digital vernier callipers so that they have a high resolution of +- 0.05 mm. The 3D printer has a resolution of 0.1mm vertically and 0.4mm horizontally.
 
 The design is made up of 15 different components:
 
 **Sides**
-The sides are the main component holding the design together, they allow the other components to connect in a secure way and hole the cards in from their sides. They include holes for the shaft to spin insided. These were printed on a smooth 3D printing bed so that the inside wall of the sides is smooth allowing the lowest friction for the cards.
+The sides are the main component holding the design together, they allow the other components to connect in a secure way and hole the cards in from their sides. They include holes for the shaft to spin inside. These were printed on a smooth 3D printing bed so that the inside wall of the sides is smooth allowing the lowest friction for the cards.
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/side_pieces.png" alt="aREST Interface Design" width="300px">
 </div>
 
 **Spacers**
-The spacers create horizontal structure in the shuffler and dictate the width of the cards put into the chasis. The current design allows for cards of 91 mm * 73mm and other similar smaller sized cards. Too small cards will not work. Two different designs of spacers were created for the two different shaft variants.
+The spacers create horizontal structure in the shuffler and dictate the width of the cards put into the chassis. The current design allows for cards of 91 mm * 73mm and other similar smaller sized cards. Too small cards will not work. Two different designs of spacers were created for the two different shaft variants.
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/card_holder_and_wall_seperators_v1.png" alt="aREST Interface Design" width="300px">
 </div>
 
 **Card holders**
-The card holders allow the cards to sit on top of them and slide off onto the motor shafts. They have a section nremoved to allow the easy removal and placing of cards as you are holding them. These pieces were also printed on a smooth 3D printing bed ass they make the most contact with the cards, this is to reduce friction. 
+The card holders allow the cards to sit on top of them and slide off onto the motor shafts. They have a section removed to allow the easy removal and placing of cards as you are holding them. These pieces were also printed on a smooth 3D printing bed ass they make the most contact with the cards, this is to reduce friction. 
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/card_holder_and_wall_seperators.png" alt="aREST Interface Design" width="300px">
 </div>
 
 **Card Blockers**
-The card blocks are designs to be able to slide vertically on the side pieces, this allows the carfeul calibration of the blockers to only allow one card to be shuffler each time by the motors. Depending on thec ard thickness they ca be adjusted accordingly, this is useful for cases such as mine where I have cards in sleeves and sometimes even double sleeves that are of different thicknesses.
+The card blocks are designs to be able to slide vertically on the side pieces, this allows the careful calibration of the blockers to only allow one card to be shuffler each time by the motors. Depending on the card thickness they ca be adjusted accordingly, this is useful for cases such as mine where I have cards in sleeves and sometimes even double sleeves that are of different thicknesses.
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/card_blockers.png" alt="aREST Interface Design" width="300px">
 </div>
 
 **Motor Shaft**
-There are two motor shaft designs v1 wass found to be less effective than v2, both designs require the addition of rubber grips and are designed to hold specific rubber pieces, this is to ensure that the cards are pushed along by the motors as the plastic 3D printed is not enough to push the cards through. 
-
+There are two motor shaft designs v1 was found to be less effective than v2, both designs require the addition of rubber grips and are designed to hold specific rubber pieces, this is to ensure that the cards are pushed along by the motors as the plastic 3D printed is not enough to push the cards through. 
 
 <div style="display: flex; justify-content: center;">
   <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="Image 1" height="500px" style="margin-right: 20px;">
   <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="Image 2" height="500px">
 </div>
-
 
 **Motor Holders**
 These pieces are designed to house the motors securely, this is so that only the rotation force is applied to the shafts and not the motors or chassis themselves. This ensures the secure and steady rotation of the motors and allows the motors to run at full speed despite the wight of the cards and the top weights. This component is designed to use the small piece sticking out of the motors to securely fasten it inside.
@@ -102,15 +97,13 @@ These pieces are designed to house the motors securely, this is so that only the
   <img src="./Documentation%20Resources/motor_holders_v2.png" alt="aREST Interface Design" width="300px">
 </div>
 
-
 ## Assembly
-
 
 ## Libraries Used
 
 This project uses several libraries to manage different aspects of the device's functionality. Here's a list of these libraries and their roles:
 
-- `WiFi.h`: This library is used for managing WiFi connections, allowing the device to connect to the internet. [More Information](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi)
+- `WiFi.h`: This library is used for managing Wi-Fi connections, allowing the device to connect to the internet. [More Information](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi)
 
 - `aREST.h`: This library is used for handling RESTful services, providing a simple way to interact with the device over HTTP. [More Information](https://github.com/marcoschwartz/aREST)
 
@@ -121,7 +114,6 @@ This project uses several libraries to manage different aspects of the device's 
 - `HTTPClient.h`: This library is used for making HTTP requests. It's used in this project to check for and download firmware updates. [More Information](https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient)
 
 - `Update.h`: This library is used for performing OTA updates. It's used to apply the firmware updates downloaded by HTTPClient. [More Information](https://github.com/espressif/arduino-esp32/tree/master/libraries/Update)
-
 
 ## Hardware requirements
 - ESP32 Featherboard or other WiFi-enabled microcontroller
@@ -149,7 +141,6 @@ The following constants are defined, use them wisely:
 -  `apPassword`: Password for the ESP32's access point (and no, "password123" is not a good choice ~~ignore my password~~).
 
 
-
 ## Setup and Usage
 - You can control the motors by sending requests to the following REST endpoints:
   - `/stop`
@@ -163,10 +154,9 @@ The following constants are defined, use them wisely:
   <img src="./Documentation%20Resources/Wifi_networking_page.png" alt="aREST Interface Design" width="300px">
 </div>
 
-
 The Card Shuffler also has provisioning capability allowing connection to any Wifi and easy setup.
 
-These instructions will guide you through the process of provisioning your ESP device, so that it can connect to your WiFi network and become accessible via its own access point.
+These instructions will guide you through the process of provisioning your ESP device, so that it can connect to your Wi-Fi network and become accessible via its own access point.
 1.  **Put the ESP into bootloader mode:**
  - Hold down the "boot" button on the ESP board, then press the "reset" button.
  - Release the "reset" button, then release the "boot" button.
@@ -181,17 +171,16 @@ These instructions will guide you through the process of provisioning your ESP d
  - Define a name and password for the access point.
 5.  **View the website from the ESP:**
  - In a web browser, go to the URL http://192.168.4.1 to view the website hosted by the ESP.
-6.  **Enter your WiFi credentials:**
- - Type in the WiFi credentials that you want the ESP to connect to.
+6.  **Enter your Wi-Fi credentials:**
+ - Type in the Wi-Fi credentials that you want the ESP to connect to.
  - Make sure that your firewall is not blocking this connection.
-
 
 ## OTA Update and Instructions:
 - The code includes an Over-The-Air (OTA) update mechanism. The device checks for updates from a specified server at startup and applies them if found.
 
 These instructions will guide you through the process of updating your ESP device over the air (OTA), using a Python server and compiled binary files.
-1.  **Ensure that your computer and ESP are on the same WiFi network:**
- - Connect your computer and ESP to the same WiFi network.
+1.  **Ensure that your computer and ESP are on the same Wi-Fi network:**
+ - Connect your computer and ESP to the same Wi-Fi network.
  - You can use a hotspot if you prefer.
 2.  **Find the IPv4 address of your computer's wireless LAN:**
  - Open a new terminal and type "ipconfig".
@@ -222,37 +211,35 @@ These instructions will guide you through the process of updating your ESP devic
 ## Testing
 
 ### Sensor Testing
-The sensor was tested at various distances measured with a caliper and these expected distances were compared to the actual read distances from te sensor, this showed that the sensor outputted results to the nearest cm. This changed the design direction as originally I has intended to use the ultrasonic sensor for both detecting card james and measuring the height if the stack of cards to determine when to stop shuffling when enough cards were in the stack, however as cards are much thinner than 1cm this couldn't be done. In the end only card jamming detection could be done with the hardware at the resolution.
+The sensor was tested at various distances measured with a calliper and these expected distances were compared to the actual read distances from the sensor, this showed that the sensor outputted results to the nearest cm. This changed the design direction as originally I has intended to use the ultrasonic sensor for both detecting card jams and measuring the height if the stack of cards to determine when to stop shuffling when enough cards were in the stack, however as cards are much thinner than 1cm this couldn't be done. In the end only card jamming detection could be done with the hardware at the resolution.
 
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/sensor_test.png" alt="aREST Interface Design" width="500px">
 </div>
 
 ### Motor Timing Testing for number of Cards Shuffled
-Testing and claibration was done on the  motor timings. It was found that the amount of cards being shuffled was much higher than expected dto the point the motors would continue running even after the maximum amount of cards the chasis could hold had already been shuffled. This called for proper testing and calibration.
+Testing and calibration was done on the  motor timings. It was found that the amount of cards being shuffled was much higher than expected to the point the motors would continue running even after the maximum amount of cards the chassis could hold had already been shuffled. This called for proper testing and calibration.
 It was found that the amount of cards shuffled was around 5 times as much as expected as shown in the table above, therefore, the code was altered to reduce the motor running duration by a scale of 5. The below table is the resulting number of cards shuffled based off the number inputted and the test was done twice to confirm. This shows that the card shuffler can shuffle the correct amount of cards pretty close to the expected number, further calibration could get the accuracy correct every time but this would require a much longer calibration process to approach  the correct calibrated values which could be done in potential further work.
 <div style="display: flex; justify-content: center;">
   <img src="./Documentation%20Resources/cards_before_shuffling.png" alt="Image 1" height="250px" style="margin-right: 20px;">
   <img src="./Documentation%20Resources/card_calibration.png" alt="Image 2" height="250px">
 </div>
 
-
-### 3D Printed chasis testing and Iterative Design Process
-Before the motors were added to the design or the motor holders were even desiged various testing has been done to ensure the chasis could shuffle cards before going forward with the electronic or software design and implementation. 
-Multiple iterations of the chasis were made and tested with slow improvements.
-The first iteration was printed at too low a quality and needed to be printed again using a higher resolution, the lower qualtiy caused connections to not fit correctl and the shafts to grind as I cranked them which proved difficult meaning that the motors wouldnt be able to spin them. 
+### 3D Printed chassis testing and Iterative Design Process
+Before the motors were added to the design or the motor holders were even designed various testing has been done to ensure the chassis could shuffle cards before going forward with the electronic or software design and implementation. 
+Multiple iterations of the chassis were made and tested with slow improvements.
+The first iteration was printed at too low a quality and needed to be printed again using a higher resolution, the lower quality caused connections to not fit correctly and the shafts to grind as I cranked them which proved difficult meaning that the motors wouldn’t be able to spin them. 
 
 <div style="text-align: center;">
   <img src="./Documentation%20Resources/3d_printer_settings.png" alt="aREST Interface Design" width="300px">
 </div>
 
-
-After a reprint at 0.1mm layer height there wre other issues, due to the 3D printed bed temperature being too low the PLA material warped heavily causing the chais to not fit together correctly and not sit flat on any surfaces.
-I increased the temperature of the hot bed to 55 degrees celcius and the chassis now fit together correctly and the shafters rotated releatively smoothly, however I noticed the texture of the shafts was rougher than I expected, this was due to 3D printing the shafts horizontally and not vertically meaning the shafters were essentialyl maded of many square cross sections rather than circular ones which is  not good for rotating parts. After reprinting these correctly the chasis worked and the shafts spun smoothly.
-The process was not finished though as the cards did not make contact with the shaft by a few mm,  even adding rubber grips didn't allow the cards to touch. Therefore, I redisgned new shafts and new spacers to house them. This meant the shaft was thicker and now made conact with the cards when rubber grips were added. 
-The device was now capable of shuffling but there was some holdups due to friction between the chasis and the cards. This was because the hot bed that my 3D printer came with was a textured bed meaning it applied a rough texture to all my 3D prints, this is normally good to break up the lines produced by a 3d printer but for parts requiring low friction this was an issue. 
-I researced compatible smooth hot beds and purchased one, after it arrived I reprinted the parts that made contact with the cards or shafts and had these areas face down on the printer bed so tey adopted the smooth face, this also meant I had to buy a flat tool to help remove them as no texture made the 3D prints adhere to the bed.
-After this the cards printed very well and smoothly and the chasis design was complete.
+After a reprint at 0.1mm layer height there were other issues, due to the 3D printed bed temperature being too low the PLA material warped heavily causing the chassis to not fit together correctly and not sit flat on any surfaces.
+I increased the temperature of the hot bed to 55 degrees Celsius and the chassis now fit together correctly and the shafters rotated relatively smoothly, however I noticed the texture of the shafts was rougher than I expected, this was due to 3D printing the shafts horizontally and not vertically meaning the shafters were essentially made of many square cross sections rather than circular ones which is  not good for rotating parts. After reprinting these correctly the chassis worked and the shafts spun smoothly.
+The process was not finished though as the cards did not make contact with the shaft by a few mm,  even adding rubber grips didn't allow the cards to touch. Therefore, I redesigned new shafts and new spacers to house them. This meant the shaft was thicker and now made contact with the cards when rubber grips were added. 
+The device was now capable of shuffling but there was some holdups due to friction between the chassis and the cards. This was because the hot bed that my 3D printer came with was a textured bed meaning it applied a rough texture to all my 3D prints, this is normally good to break up the lines produced by a 3d printer but for parts requiring low friction this was an issue. 
+I researched compatible smooth hot beds and purchased one, after it arrived I reprinted the parts that made contact with the cards or shafts and had these areas face down on the printer bed so they adopted the smooth face, this also meant I had to buy a flat tool to help remove them as no texture made the 3D prints adhere to the bed.
+After this the cards printed very well and smoothly and the chassis design was complete.
 
 ### Unit Testing Arduino Code
 Unit testing was attempted but there are no standard built-in unit testing frameworks in C++ for Arduino (like JUnit for Java or unittest for Python). This code does not lend itself easily to unit testing, as it's largely dependent on hardware interactions and also on the aREST library. Also, the code would need to be largely refactored to allow for unit testing by abstracting the functions which would require  larger time frame than the project allows, and it would likely not be worth it due to most of the testing being reliant on hardware which unit tests cannot account for.
@@ -271,7 +258,7 @@ Acceptance testing seems to be the most appropriate type of testing for this pro
 - The user should be able to select the speed of the shuffler.
 - The interface feedback (progress bar and cad counter) should reset for each new shuffle.
 
-The project has been tested from the perspective of the user as a whole to ensure that it meets the specifications that the user would expect. Each shuffle type has been tested with different numbers of cards and at different speeds. The results was that the shuffle types shuffled as expected, outputted the correct number of times even at different speeds and the progress bar and card counter were accurate in their timings and for the amount of cards shuffled throughout the process. the ultrasonic sensor correctly identified card jams and stops the motors as well as the stop button stopping the motors when pressed. The interface correctly resets when a new shuffle is performed.
+The project has been tested from the perspective of the user as a whole to ensure that it meets the specifications that the user would expect. Each shuffle type has been tested with different numbers of cards and at different speeds. The results were that the shuffle types shuffled as expected, outputted the correct number of times even at different speeds and the progress bar and card counter were accurate in their timings and for the amount of cards shuffled throughout the process. the ultrasonic sensor correctly identified card jams and stops the motors as well as the stop button stopping the motors when pressed. The interface correctly resets when a new shuffle is performed.
 
 ### Overall Testing
 |Test No.|Description|Expected Result|Actual Result|Successful Implementation?|
@@ -304,7 +291,6 @@ The project has been tested from the perspective of the user as a whole to ensur
 |21|Test card counting accuracy: Verify the device correctly counts the number of cards shuffled|The device should provide a correct count of cards shuffled|The device provided a correct count of cards shuffled|Yes|
 |22|Test the system's ability to handle different card types: Verify the device can handle different types of cards (e.g., plastic, paper, different sizes)|The device should be able to handle all supported card types effectively| The device could handle call standard card sizes below the size of 91mm * 71mm|Yes|
 
-
 ## Self-Assessment
 
 Reflecting on this project, there are several areas where improvements can be made in future iterations and other projects.
@@ -327,13 +313,12 @@ In future iterations of this project, implementing an adjustable card guide coul
 Presently, accessing shuffled cards can be a bit challenging. For future iterations, an improved card retrieval mechanism could be designed. This could be a chute that guides the shuffled cards to a specific location or a platform where the shuffled cards are collected for easy pickup. 
 
 **Enhanced Shuffling Mechanism**
-The current shuffling mechanism moves the bottom card from one of two piles. While this does shuffle the cards randomly, it does not allow for all posible card permiations. Future versions could look at incorporating a more advanced shuffling algorithm or mechanism. This could include random selection of cards from different positions within the pile.
+The current shuffling mechanism moves the bottom card from one of two piles. While this does shuffle the cards randomly, it does not allow for all possible card permeations. Future versions could look at incorporating a more advanced shuffling algorithm or mechanism. This could include random selection of cards from different positions within the pile.
 
 ### What went well?
-Overall the project specifications were met. There has been a succesful creation of a card shuffling IoT device.
+Overall the project specifications were met. There has been a successful creation of a card shuffling IoT device.
 
-The chasis has a sturdy build and is seemingly in perfect condition after large amounts of use during testing. Also, due to the  3D printed nature of the design parts can easily be replaced or modified. This allows for easy maintainability, scalability and upgrades or maybe alterations for users specific needs such as different card sizes. 
-
+The chassis has a sturdy build and is seemingly in perfect condition after large amounts of use during testing. Also, due to the  3D printed nature of the design parts can easily be replaced or modified. This allows for easy maintainability, scalability and upgrades or maybe alterations for users specific needs such as different card sizes. 
 
 ## Additional Resources and References
 
@@ -341,7 +326,7 @@ Below are some important resources and references that will provide further unde
 
 1. **Arduino Programming Language (API)**: This is the main reference to understand the Arduino Programming Language used to program the microcontroller in this project. You can find it [here](https://www.arduino.cc/reference/en/).
 
-2. **WiFi.h**: This library provides the necessary functions to connect to WiFi networks and set up an access point. Check out the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi).
+2. **WiFi.h**: This library provides the necessary functions to connect to Wi-Fi networks and set up an access point. Check out the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi).
 
 3. **WebServer.h**: This library is used to create a simple HTTP server on the ESP32. View the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer).
 
@@ -362,3 +347,4 @@ Below are some important resources and references that will provide further unde
 
 ## Contact
 - You can reach me at [egoodbrand1@sheffield.ac.uk](mailto:egoodbrand1@sheffield.ac.uk) for any queries.
+

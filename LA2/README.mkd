@@ -1,6 +1,10 @@
 
 # Card Shuffler
 
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/full_setup_1.jpg" alt="full_setup_1" width="600px">
+</div>
+
 This is the documentation for a Card Shuffler device, which is controlled over Wi-Fi using an aREST interface and has built-in jamming detection.
 
 ## Video Demonstration
@@ -65,6 +69,12 @@ The ultrasonic sensor is attatched to a seperate breadboard so that it can be mo
   <img src="./Documentation%20Resources/ultransonic_sensor_setup_LED_and_OTA_button.jpg" alt="ultransonic_sensor_setup_LED_and_OTA_button" width="300px">
 </div>
 
+The ultrasonic sensor breaboard can be easily mounted to the chassis using the sticky bottom of the breadboard as shown below:
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/ultrasonic_sensor_mounted.jpg" alt="ultrasonic_sensor_mounted" width="300px">
+</div>
+
+
 ## 3D Printed Chassis
 
 The main structure of the card shuffler is a 3D printed chassis, designed to hold the cards and incorporate the mechanical parts needed for shuffling. The design should be simplistic and immediately obvious to the user how it functions such as where to put the cards. 
@@ -104,6 +114,11 @@ There are two motor shaft designs v1 was found to be less effective than v2, bot
 <div style="display: flex; justify-content: center;">
   <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="motor_shaft_v1" height="500px" style="margin-right: 20px;">
   <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="motor_shaft_v2" height="500px">
+</div>
+
+The rubber bands are glued around the shaft like this:
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/rubber_pads.jpg" alt="rubber_pads.jpg" width="300px">
 </div>
 
 **Motor Holders**
@@ -274,7 +289,13 @@ I increased the temperature of the hot bed to 55 degrees Celsius and the chassis
 The process was not finished though as the cards did not make contact with the shaft by a few mm,  even adding rubber grips didn't allow the cards to touch. Therefore, I redesigned new shafts and new spacers to house them. This meant the shaft was thicker and now made contact with the cards when rubber grips were added. 
 The device was now capable of shuffling but there was some holdups due to friction between the chassis and the cards. This was because the hot bed that my 3D printer came with was a textured bed meaning it applied a rough texture to all my 3D prints, this is normally good to break up the lines produced by a 3d printer but for parts requiring low friction this was an issue. 
 I researched compatible smooth hot beds and purchased one, after it arrived I reprinted the parts that made contact with the cards or shafts and had these areas face down on the printer bed so they adopted the smooth face, this also meant I had to buy a flat tool to help remove them as no texture made the 3D prints adhere to the bed.
+Finally, the last problem was the cards bending. Not all cards were able to stay perfectly flat and therefore, would not go under the card blocker and through the slot. This meant that weights like the ones in the image below were needed to apply constant downwards pressure. This also helped by adding extra downforce getting extra grip with the rubber.
 After this the cards printed very well and smoothly and the chassis design was complete.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/weights.jpg" alt="weights.jpg.jpg" width="300px">
+</div>
+
 
 ### Unit Testing Arduino Code
 Unit testing was attempted but there are no standard built-in unit testing frameworks in C++ for Arduino (like JUnit for Java or unittest for Python). This code does not lend itself easily to unit testing, as it's largely dependent on hardware interactions and also on the aREST library. Also, the code would need to be largely refactored to allow for unit testing by abstracting the functions which would require  larger time frame than the project allows, and it would likely not be worth it due to most of the testing being reliant on hardware which unit tests cannot account for.

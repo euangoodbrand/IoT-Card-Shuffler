@@ -23,7 +23,7 @@ The aREST interface must be easy to use and intuitive giving visual feedback to 
 
 ### Arduino code
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/Software diagram.png" alt="aREST Interface Design" width="600px">
+  <img src="./Documentation%20Resources/Software diagram.png" alt="Software diagram" width="600px">
 </div>
 The code must be able to interact with the aREST interface as well as perform certain functions. As this is an IoT device it must firstly Connect to Wi-Fi via networking and be able to perform OTA firmware updates.
 The code must also be able to control the  motors in the necessary ways to shuffle a Riffle-Shuffle, Cutting a deck, Random Shuffle and a Custom Shuffle whilst also taking into account the users selected number of cards and shuffling speed in any calculations.
@@ -54,7 +54,7 @@ These components are connected together along with the 3D printed chassis as sho
 The ESP32 is connected to the Motordriver and the Motors in the following configuration. The setup also requires two batteries, abattery to power the motors and a lithium battery to allow the card shuffler to work without being plugged in.
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/ESP_Motordriver_and_motors_batteries.jpg.png" alt="ESP_Motordriver_and_motors_batteries.jpg" width="300px">
+  <img src="./Documentation%20Resources/ESP_Motordriver_and_motors_batteries.jpg" alt="ESP_Motordriver_and_motors_batteries" width="300px">
 </div>
 
 **Ultrasonic Sensor**
@@ -62,7 +62,7 @@ The ESP32 is connected to the Motordriver and the Motors in the following config
 The ultrasonic sensor is attatched to a seperate breadboard so that it can be mounted inside the chassis, this is to allow the ultrasonic sensor to be able to detect card james as well as give the user visuals of the LEDs attatched to that same breadboard. The button for OTA updates is also on this breadboard to allow the user to be able to press it easily for new firmware.
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/ultransonic_sensor_setup_LED_and_OTA_button.jpg.jpg.png" alt="ultransonic_sensor_setup_LED_and_OTA_button.jpg.jpg" width="300px">
+  <img src="./Documentation%20Resources/ultransonic_sensor_setup_LED_and_OTA_button.jpg" alt="ultransonic_sensor_setup_LED_and_OTA_button" width="300px">
 </div>
 
 ## 3D Printed Chassis
@@ -77,40 +77,40 @@ The design is made up of 15 different components:
 **Sides**
 The sides are the main component holding the design together, they allow the other components to connect in a secure way and hole the cards in from their sides. They include holes for the shaft to spin inside. These were printed on a smooth 3D printing bed so that the inside wall of the sides is smooth allowing the lowest friction for the cards.
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/side_pieces.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/side_pieces.png" alt="side_pieces" width="300px">
 </div>
 
 **Spacers**
 The spacers create horizontal structure in the shuffler and dictate the width of the cards put into the chassis. The current design allows for cards of 91 mm * 73mm and other similar smaller sized cards. Too small cards will not work. Two different designs of spacers were created for the two different shaft variants.
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/card_holder_and_wall_seperators_v1.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/card_holder_and_wall_seperators_v1.png" alt="card_holder_and_wall_seperators_v1" width="300px">
 </div>
 
 **Card holders**
 The card holders allow the cards to sit on top of them and slide off onto the motor shafts. They have a section removed to allow the easy removal and placing of cards as you are holding them. These pieces were also printed on a smooth 3D printing bed ass they make the most contact with the cards, this is to reduce friction. 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/card_holder_and_wall_seperators.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/card_holder_and_wall_seperators.png" alt="card_holder_and_wall_seperators" width="300px">
 </div>
 
 **Card Blockers**
 The card blocks are designs to be able to slide vertically on the side pieces, this allows the careful calibration of the blockers to only allow one card to be shuffler each time by the motors. Depending on the card thickness they ca be adjusted accordingly, this is useful for cases such as mine where I have cards in sleeves and sometimes even double sleeves that are of different thicknesses.
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/card_blockers.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/card_blockers.png" alt="card_blockers" width="300px">
 </div>
 
 **Motor Shaft**
 There are two motor shaft designs v1 was found to be less effective than v2, both designs require the addition of rubber grips and are designed to hold specific rubber pieces, this is to ensure that the cards are pushed along by the motors as the plastic 3D printed is not enough to push the cards through. 
 
 <div style="display: flex; justify-content: center;">
-  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="Image 1" height="500px" style="margin-right: 20px;">
-  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="Image 2" height="500px">
+  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="motor_shaft_v1" height="500px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="motor_shaft_v2" height="500px">
 </div>
 
 **Motor Holders**
 These pieces are designed to house the motors securely, this is so that only the rotation force is applied to the shafts and not the motors or chassis themselves. This ensures the secure and steady rotation of the motors and allows the motors to run at full speed despite the wight of the cards and the top weights. This component is designed to use the small piece sticking out of the motors to securely fasten it inside.
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/motor_holders_v2.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/motor_holders_v2.png" alt="motor_holders_v2" width="300px">
 </div>
 
 ### Assembly
@@ -121,7 +121,7 @@ The 3D Chassis is split into two main parts. The card shuffler and the Motor hou
 
 The card shuffler is made of 10 different 3D printed parts and is assembled like this:
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/3D_print_assembly.jpg.png" alt="3D_print_assembly.jpg" width="300px">
+  <img src="./Documentation%20Resources/3D_print_assembly.jpg" alt="3D_print_assembly.jpg" width="300px">
 </div>
 
 **Motor Housing**
@@ -130,8 +130,8 @@ The motor housing is composed of 4four 3D printed parts that are put together as
 
 
 <div style="display: flex; justify-content: center;">
-  <img src="./Documentation%20Resources/motor_holder_front.jpg.png" alt="MH Front" height="500px" style="margin-right: 20px;">
-  <img src="./Documentation%20Resources/motor_holder_back.jpg.png" alt="MH back" height="500px">
+  <img src="./Documentation%20Resources/motor_holder_front.jpg" alt="MH Front" height="500px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_holder_back.jpg" alt="MH back" height="500px">
 </div>
 
 ## Libraries Used
@@ -186,7 +186,7 @@ The following constants are defined, use them wisely:
 
 ## Provisioning Instructions:
 <div>
-  <img src="./Documentation%20Resources/Wifi_networking_page.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/Wifi_networking_page.png" alt="Wifi_networking_page" width="300px">
 </div>
 
 The Card Shuffler also has provisioning capability allowing connection to any Wifi and easy setup.
@@ -249,15 +249,15 @@ These instructions will guide you through the process of updating your ESP devic
 The sensor was tested at various distances measured with a calliper and these expected distances were compared to the actual read distances from the sensor, this showed that the sensor outputted results to the nearest cm. This changed the design direction as originally I has intended to use the ultrasonic sensor for both detecting card jams and measuring the height if the stack of cards to determine when to stop shuffling when enough cards were in the stack, however as cards are much thinner than 1cm this couldn't be done. In the end only card jamming detection could be done with the hardware at the resolution.
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/sensor_test.png" alt="aREST Interface Design" width="500px">
+  <img src="./Documentation%20Resources/sensor_test.png" alt="sensor_test" width="500px">
 </div>
 
 ### Motor Timing Testing for number of Cards Shuffled
 Testing and calibration was done on the  motor timings. It was found that the amount of cards being shuffled was much higher than expected to the point the motors would continue running even after the maximum amount of cards the chassis could hold had already been shuffled. This called for proper testing and calibration.
 It was found that the amount of cards shuffled was around 5 times as much as expected as shown in the table above, therefore, the code was altered to reduce the motor running duration by a scale of 5. The below table is the resulting number of cards shuffled based off the number inputted and the test was done twice to confirm. This shows that the card shuffler can shuffle the correct amount of cards pretty close to the expected number, further calibration could get the accuracy correct every time but this would require a much longer calibration process to approach  the correct calibrated values which could be done in potential further work.
 <div style="display: flex; justify-content: center;">
-  <img src="./Documentation%20Resources/cards_before_shuffling.png" alt="Image 1" height="250px" style="margin-right: 20px;">
-  <img src="./Documentation%20Resources/card_calibration.png" alt="Image 2" height="250px">
+  <img src="./Documentation%20Resources/cards_before_shuffling.png" alt="cards_before_shuffling" height="250px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/card_calibration.png" alt="card_calibration" height="250px">
 </div>
 
 ### 3D Printed chassis testing and Iterative Design Process
@@ -266,7 +266,7 @@ Multiple iterations of the chassis were made and tested with slow improvements.
 The first iteration was printed at too low a quality and needed to be printed again using a higher resolution, the lower quality caused connections to not fit correctly and the shafts to grind as I cranked them which proved difficult meaning that the motors wouldn’t be able to spin them. 
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/3d_printer_settings.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/3d_printer_settings.png" alt="3d_printer_settings" width="300px">
 </div>
 
 After a reprint at 0.1mm layer height there were other issues, due to the 3D printed bed temperature being too low the PLA material warped heavily causing the chassis to not fit together correctly and not sit flat on any surfaces.
@@ -344,7 +344,7 @@ Good documentation practices are crucial not only for project management but als
 More research could have gone into other similar designs that already exist. If more research was done then maybe it would have required less iterations to get to a working solution. Below is an image of the 3D parts printed that didn't end up in the final design due to different problems.
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/iteration_box.png" alt="iteration_box" width="300px">
+  <img src="./Documentation%20Resources/iteration_box.jpg" alt="iteration_box" width="300px">
 </div>
 
 ### Future Improvements

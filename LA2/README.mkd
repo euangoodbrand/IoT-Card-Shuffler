@@ -7,6 +7,7 @@ This is the documentation for a Card Shuffler device, which is controlled over W
 The software is composed of two components, the aREST Interface and the arduino code.
 
 ### aRest Interface Design
+`![aREST Interface Design](Documentation Resources\final_interface.png)`
 The aRest interface must be easy to use and intuitive giving visual feedback to the user also. The design must also be simple and only include necessary features, no superfluous features should be on the itnerface and any features added should have a minimal design that is accessible. The interface was desiged to have these features: Buttons for each shuffle (Riffle, Cut, Random and Custom) as well as a stop button. The user should have control over the device therefore, the user can choose thenumber of cards they wish to shuffle, control the speed of the shuffling via a slider and customise their own shuffle (custom shuffle). The slider was used to that the usre doesn' enter a value outside of the motors capacity.
 
 ### Arduino code
@@ -278,7 +279,7 @@ The current shuffling mechanism moves the bottom card from one of two piles. Whi
 ### What went well?
 Overall the project specifications were met. There has been a succesful creation of a card shuffling IoT device.
 
-The chasis has a sturdy build and is seemingly in perfect condition after large amounts of use during testing. Also, due to the  3D printed nature of the design parts can easily be replaced or modified. This allows for easy maintainability, scalability and upgrades or maybe alterations for users specific needs such as different card sizes.
+The chasis has a sturdy build and is seemingly in perfect condition after large amounts of use during testing. Also, due to the  3D printed nature of the design parts can easily be replaced or modified. This allows for easy maintainability, scalability and upgrades or maybe alterations for users specific needs such as different card sizes. 
 
 
 ## Additional Resources and References

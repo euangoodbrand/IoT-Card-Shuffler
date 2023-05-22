@@ -8,7 +8,7 @@ The software is composed of two components, the aREST Interface and the arduino 
 
 ### aRest Interface Design
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/final_interface.png" alt="aREST Interface Design" width="600px">
+  <img src="./Documentation%20Resources/final_interface.png" alt="aREST Interface Design" width="300px">
 </div>
 
 
@@ -16,7 +16,7 @@ The aRest interface must be easy to use and intuitive giving visual feedback to 
 
 ### Arduino code
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/Software diagram.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/Software diagram.png" alt="aREST Interface Design" width="600px">
 </div>
 The code must be able to interact with the aREST interface as well as perform certain functions. As this is an IoT device it must firstly Connect to WiFi via networking and be able to perform OTA firmware updates.
 The code must also be able to control the  motors in the necessary ways to shuffle a Riffle-Shuffle, Cutting a deck, Random Shuffle and a Custom Shuffle whilst also taking into account the users selected number of cards and shuffling speed in any calculations.
@@ -79,12 +79,13 @@ The card blocks are designs to be able to slide vertically on the side pieces, t
 
 **Motor Shaft**
 There are two motor shaft designs v1 wass found to be less effective than v2, both designs require the addition of rubber grips and are designed to hold specific rubber pieces, this is to ensure that the cards are pushed along by the motors as the plastic 3D printed is not enough to push the cards through. 
-<div style="text-align: center;">
-  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="aREST Interface Design" width="300px">
+
+
+<div style="display: flex; justify-content: center;">
+  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="Image 1" width="300px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="Image 2" width="300px">
 </div>
-<div style="text-align: center;">
-  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="aREST Interface Design" width="300px">
-</div>
+
 
 **Motor Holders**
 These pieces are designed to house the motors securely, this is so that only the rotation force is applied to the shafts and not the motors or chassis themselves. This ensures the secure and steady rotation of the motors and allows the motors to run at full speed despite the wight of the cards and the top weights. This component is designed to use the small piece sticking out of the motors to securely fasten it inside.

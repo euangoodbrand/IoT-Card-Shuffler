@@ -16,7 +16,7 @@ The aRest interface must be easy to use and intuitive giving visual feedback to 
 
 ### Arduino code
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/software diagram.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/Software diagram.png" alt="aREST Interface Design" width="300px">
 </div>
 The code must be able to interact with the aREST interface as well as perform certain functions. As this is an IoT device it must firstly Connect to WiFi via networking and be able to perform OTA firmware updates.
 The code must also be able to control the  motors in the necessary ways to shuffle a Riffle-Shuffle, Cutting a deck, Random Shuffle and a Custom Shuffle whilst also taking into account the users selected number of cards and shuffling speed in any calculations.
@@ -62,13 +62,13 @@ The sides are the main component holding the design together, they allow the oth
 **Spacers**
 The spacers create horizontal structure in the shuffler and dictate the width of the cards put into the chasis. The current design allows for cards of 91 mm * 73mm and other similar smaller sized cards. Too small cards will not work. Two different designs of spacers were created for the two different shaft variants.
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/card_holders_and_wall_seperators_v1.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/card_holder_and_wall_seperators_v1.png" alt="aREST Interface Design" width="300px">
 </div>
 
 **Card holders**
 The card holders allow the cards to sit on top of them and slide off onto the motor shafts. They have a section nremoved to allow the easy removal and placing of cards as you are holding them. These pieces were also printed on a smooth 3D printing bed ass they make the most contact with the cards, this is to reduce friction. 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/card_holders_and_wall_seperators.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/card_holder_and_wall_seperators.png" alt="aREST Interface Design" width="300px">
 </div>
 
 **Card Blockers**

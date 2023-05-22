@@ -3,16 +3,24 @@
 
 This is the documentation for a Card Shuffler device, which is controlled over WiFi using an aRest interface and has built-in jamming detection.
 
+## Video Demonstration
+
+<video controls>
+  <source src="./Documentation%20Resources/Card_Shuffler_Demonstration_Video.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
+
 ## Software Design
 The software is composed of two components, the aREST Interface and the arduino code.
 
-### aRest Interface Design
+### aREST Interface Design
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/aREST Interface Diagram.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/aREST Interface Diagram.png" alt="aREST Interface Design" width="600px">
 </div>
 
 
-The aRest interface must be easy to use and intuitive giving visual feedback to the user also. The design must also be simple and only include necessary features, no superfluous features should be on the itnerface and any features added should have a minimal design that is accessible. The interface was desiged to have these features: Buttons for each shuffle (Riffle, Cut, Random and Custom) as well as a stop button. The user should have control over the device therefore, the user can choose thenumber of cards they wish to shuffle, control the speed of the shuffling via a slider and customise their own shuffle (custom shuffle). The slider was used to that the usre doesn' enter a value outside of the motors capacity.
+The aREST interface must be easy to use and intuitive giving visual feedback to the user also. The design must also be simple and only include necessary features, no superfluous features should be on the itnerface and any features added should have a minimal design that is accessible. The interface was desiged to have these features: Buttons for each shuffle (Riffle, Cut, Random and Custom) as well as a stop button. The user should have control over the device therefore, the user can choose thenumber of cards they wish to shuffle, control the speed of the shuffling via a slider and customise their own shuffle (custom shuffle). The slider was used to that the usre doesn' enter a value outside of the motors capacity.
 
 ### Arduino code
 <div style="text-align: center;">
@@ -97,10 +105,6 @@ These pieces are designed to house the motors securely, this is so that only the
 
 ## Assembly
 
-*Instructions for how to assemble the hardware components and attach them to the 3D printed chassis.*
-`Link:`
-`Video below, click on image if video doesn't run (will redirect to vimeo where video is hosted)`
-[![Video of ESP 32 showing visuals of provisioning and ota update features](https://i.vimeocdn.com/video/813183579.jpg)](https://vimeo.com/813183579)
 
 ## Libraries Used
 
@@ -298,7 +302,7 @@ The project has been tested from the perspective of the user as a whole to ensur
 |19|Test the responsiveness of the interface: Verify the interface reacts promptly to user interactions|The interface should respond quickly to all user interactions|The interface responded quickly to all user interactions|Yes|
 |20|Test the speed control of the motors: Verify if the speed of the motors can be controlled effectively|The speed of the motors should change correctly as per control inputs|The speed of the motors changed correctly as per control inputs|Yes|
 |21|Test card counting accuracy: Verify the device correctly counts the number of cards shuffled|The device should provide a correct count of cards shuffled|The device provided a correct count of cards shuffled|Yes|
-|22|Test the system's ability to handle different card types: Verify the device can handle different types of cards (e.g., plastic, paper, different sizes)|The device should be able to handle all supported card types effectively|The device was able to handle all tested card types effectively|Yes|
+|22|Test the system's ability to handle different card types: Verify the device can handle different types of cards (e.g., plastic, paper, different sizes)|The device should be able to handle all supported card types effectively| The device could handle call standard card sizes below the size of 91mm * 71mm|Yes|
 
 
 ## Self-Assessment

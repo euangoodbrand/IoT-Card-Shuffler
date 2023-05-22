@@ -7,7 +7,7 @@ This is the documentation for a Card Shuffler device, which is controlled over W
 The software is composed of two components, the aREST Interface and the arduino code.
 
 ### aRest Interface Design
-`![aREST Interface Design](./Documentation%20Resources/final_interface.png)`
+![aREST Interface Design](./Documentation%20Resources/final_interface.png)
 The aRest interface must be easy to use and intuitive giving visual feedback to the user also. The design must also be simple and only include necessary features, no superfluous features should be on the itnerface and any features added should have a minimal design that is accessible. The interface was desiged to have these features: Buttons for each shuffle (Riffle, Cut, Random and Custom) as well as a stop button. The user should have control over the device therefore, the user can choose thenumber of cards they wish to shuffle, control the speed of the shuffling via a slider and customise their own shuffle (custom shuffle). The slider was used to that the usre doesn' enter a value outside of the motors capacity.
 
 ### Arduino code

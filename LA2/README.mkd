@@ -5,11 +5,11 @@ This is the documentation for a Card Shuffler device, which is controlled over W
 
 ## Video Demonstration
 
-<video controls>
-  <source src="./Documentation%20Resources/Card_Shuffler_Demonstration_Video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
+<figure class="video_container">
+  <video controls="true" allowfullscreen="true" poster="./Documentation%20Resources/video_icon.png">
+    <source src="./Documentation%20Resources/Card_Shuffler_Demonstration_Video.mp4" type="video/mp4">
+  </video>
+</figure>
 
 ## Software Design
 The software is composed of two components, the aREST Interface and the arduino code.

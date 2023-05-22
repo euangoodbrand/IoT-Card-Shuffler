@@ -8,7 +8,7 @@ The software is composed of two components, the aREST Interface and the arduino 
 
 ### aRest Interface Design
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/final_interface.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/final_interface.png" alt="aREST Interface Design" width="600px">
 </div>
 
 
@@ -80,13 +80,16 @@ The card blocks are designs to be able to slide vertically on the side pieces, t
 **Motor Shaft**
 There are two motor shaft designs v1 wass found to be less effective than v2, both designs require the addition of rubber grips and are designed to hold specific rubber pieces, this is to ensure that the cards are pushed along by the motors as the plastic 3D printed is not enough to push the cards through. 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/motor_holders_v2.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="aREST Interface Design" width="300px">
+</div>
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="aREST Interface Design" width="300px">
 </div>
 
 **Motor Holders**
 These pieces are designed to house the motors securely, this is so that only the rotation force is applied to the shafts and not the motors or chassis themselves. This ensures the secure and steady rotation of the motors and allows the motors to run at full speed despite the wight of the cards and the top weights. This component is designed to use the small piece sticking out of the motors to securely fasten it inside.
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/software diagram.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/motor_holders_v2.png" alt="aREST Interface Design" width="300px">
 </div>
 
 

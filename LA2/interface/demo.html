@@ -1,31 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <!-- Define character set -->
   <meta charset=utf-8 />
+  <!-- Set title of the document -->
   <title>aREST.js Demo</title>
+  <!-- Link to the Bootstrap CSS framework -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <!-- Link to the custom CSS file -->
   <link rel="stylesheet" type="text/css" href="style.css">
+  <!-- Import jQuery library -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <!-- Import AjaxQ library -->
   <script type="text/javascript" src="https://cdn.rawgit.com/Foliotek/AjaxQ/master/ajaxq.js"></script>
+  <!-- Import aREST.js library -->
   <script type="text/javascript" src="https://cdn.rawgit.com/marcoschwartz/aREST.js/master/aREST.js"></script>
+  <!-- Link to the custom JS file -->
   <script type="text/javascript" src="script.js"></script>
 </head>
 <body>
+<!-- Start of main container -->
 <div class='container'>
+  <!-- Page heading -->
   <h1>Card Shuffler</h1>
+  <!-- Progress bar -->
   <div class="progress">
     <div class="progress-bar" role="progressbar" style="width: 0%" id="progressBar"></div>
   </div>
+  <!-- First row of information -->
   <div class='row'>
     <div class="col-md-6">
+      <!-- Number of cards shuffled -->
       <p id="cardsShuffledCount">Cards shuffled: 0</p>
     </div>
     <div class="col-md-6">
+      <!-- Shuffling progress info -->
       <p id="shufflingProgress"></p>
     </div>
   </div>
 
-
+<!-- Section for inputting number of cards to be shuffled -->
 <div class='row'>
     <div class="col-md-6">
         <form id='oppositeConstantForm'>
@@ -36,57 +50,65 @@
         </form>
     </div>
 </div>
-  
+
+<!-- Button for the "Riffle Shuffle" action -->
 <div class='row'>
     <div class="col-md-12">
         <button id='oppositeConstant' class='btn btn-primary btn-block'>Riffle Shuffle</button>
     </div>
 </div>
-  
+
+<!-- Button for the "Cut the Deck" action -->
 <div class='row'>
-	<div class="col-md-12">
-		<button id='alternating' class='btn btn-primary btn-block' type="button">Cut the Deck</button>
-	</div>
+    <div class="col-md-12">
+        <button id='alternating' class='btn btn-primary btn-block' type="button">Cut the Deck</button>
+    </div>
 </div>
 
+<!-- Button for the "Random Shuffle" action -->
 <div class='row'>
-	<div class="col-md-12">
-		<button id='randomMotion' class='btn btn-primary btn-block' type="button">Random Shuffle</button>
-	</div>
+    <div class="col-md-12">
+        <button id='randomMotion' class='btn btn-primary btn-block' type="button">Random Shuffle</button>
+    </div>
 </div>
 
+<!-- Section for defining custom shuffle parameters -->
 <div class='row'>
-	<div class="col-md-4">
-		<form id='leftStackForm'>
-			<div class="form-group">
-				<label for="leftCardsNumber">Left Stack:</label>
-				<input type="number" class="form-control" id="leftCardsNumber" min="1" required>
-			</div>
-		</form>
-	</div>
-	<div class="col-md-4">
-		<form id='rightStackForm'>
-			<div class="form-group">
-				<label for="rightCardsNumber">Right Stack:</label>
-				<input type="number" class="form-control" id="rightCardsNumber" min="1" required>
-			</div>
-		</form>
-	</div>
-
-	<div class="col-md-4">
-		<button id='customShuffle' class='btn btn-primary btn-block'>Custom</button>
-	</div>
+    <div class="col-md-4">
+        <form id='leftStackForm'>
+            <div class="form-group">
+                <label for="leftCardsNumber">Left Stack:</label>
+                <input type="number" class="form-control" id="leftCardsNumber" min="1" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <form id='rightStackForm'>
+            <div class="form-group">
+                <label for="rightCardsNumber">Right Stack:</label>
+                <input type="number" class="form-control" id="rightCardsNumber" min="1" required>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-4">
+        <!-- Button for the "Custom Shuffle" action -->
+        <button id='customShuffle' class='btn btn-primary btn-block'>Custom</button>
+    </div>
 </div>
 
+<!-- Button for the "Stop" action -->
 <div class='row'>
     <div class="col-md-12">
         <button id='stop' class='btn btn-primary btn-block' type="button">Stop</button>
     </div>
 </div>
 
+<!-- Section for adjusting the shuffling speed -->
 <div class='row'>
     <div class="col-md-12">
+        <!-- Current shuffling speed -->
         <p id="shufflingSpeedValue">Shuffling Speed: 200</p>
+        <!-- Slider for adjusting shuffling speed -->
         <div class="form-group">
             <label for="shufflingSpeed">Shuffling Speed (Take caution, max 255):</label>
             <input type="range" class="form-control" id="shufflingSpeed" min="0" max="255" value="200">
@@ -94,7 +116,7 @@
     </div>
 </div>
 
-</div>
+</div> <!-- End of main container -->
 
 </body>
 </html>

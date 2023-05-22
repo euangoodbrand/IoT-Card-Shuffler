@@ -49,6 +49,22 @@ These components are connected together along with the 3D printed chassis as sho
 
 ### Connections
 
+**ESP32 and MotorDriver**
+
+The ESP32 is connected to the Motordriver and the Motors in the following configuration. The setup also requires two batteries, abattery to power the motors and a lithium battery to allow the card shuffler to work without being plugged in.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/ESP_Motordriver_and_motors_batteries.jpg.png" alt="ESP_Motordriver_and_motors_batteries.jpg" width="300px">
+</div>
+
+**Ultrasonic Sensor**
+
+The ultrasonic sensor is attatched to a seperate breadboard so that it can be mounted inside the chassis, this is to allow the ultrasonic sensor to be able to detect card james as well as give the user visuals of the LEDs attatched to that same breadboard. The button for OTA updates is also on this breadboard to allow the user to be able to press it easily for new firmware.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/ultransonic_sensor_setup_LED_and_OTA_button.jpg.jpg.png" alt="ultransonic_sensor_setup_LED_and_OTA_button.jpg.jpg" width="300px">
+</div>
+
 ## 3D Printed Chassis
 
 The main structure of the card shuffler is a 3D printed chassis, designed to hold the cards and incorporate the mechanical parts needed for shuffling. The design should be simplistic and immediately obvious to the user how it functions such as where to put the cards. 
@@ -97,7 +113,26 @@ These pieces are designed to house the motors securely, this is so that only the
   <img src="./Documentation%20Resources/motor_holders_v2.png" alt="aREST Interface Design" width="300px">
 </div>
 
-## Assembly
+### Assembly
+
+The 3D Chassis is split into two main parts. The card shuffler and the Motor housing which are then connected via the gears. 
+
+**Card Shuffler**
+
+The card shuffler is made of 10 different 3D printed parts and is assembled like this:
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/3D_print_assembly.jpg.png" alt="3D_print_assembly.jpg" width="300px">
+</div>
+
+**Motor Housing**
+
+The motor housing is composed of 4four 3D printed parts that are put together as so, there is a front and back to show how the motors are housed and how the gears are positioned on the front:
+
+
+<div style="display: flex; justify-content: center;">
+  <img src="./Documentation%20Resources/motor_holder_front.jpg.png" alt="MH Front" height="500px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_holder_back.jpg.png" alt="MH back" height="500px">
+</div>
 
 ## Libraries Used
 
@@ -303,6 +338,14 @@ Greater knowledge and understanding of the hardware used in the project can lead
 
 ### Documentation
 Good documentation practices are crucial not only for project management but also for troubleshooting and further development. During the course of this project, it was noticed that better documentation during the development phase, rather than close to the end, would have saved time and confusion. An example was not remembering which pin was assigned to which motor upon reassembly causing lots of wasted time. Going forward, regular updates to the documentation during the development phase will be implemented, detailing decisions, changes, and important specifications. 
+
+### More research
+
+More research could have gone into other similar designs that already exist. If more research was done then maybe it would have required less iterations to get to a working solution. Below is an image of the 3D parts printed that didn't end up in the final design due to different problems.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/iteration_box.png" alt="iteration_box" width="300px">
+</div>
 
 ### Future Improvements
 

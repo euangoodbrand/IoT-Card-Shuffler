@@ -8,7 +8,7 @@ The software is composed of two components, the aREST Interface and the arduino 
 
 ### aRest Interface Design
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/aRESR Interface Diagram.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/aREST Interface Diagram.png" alt="aREST Interface Design" width="300px">
 </div>
 
 
@@ -221,15 +221,15 @@ These instructions will guide you through the process of updating your ESP devic
 The sensor was tested at various distances measured with a caliper and these expected distances were compared to the actual read distances from te sensor, this showed that the sensor outputted results to the nearest cm. This changed the design direction as originally I has intended to use the ultrasonic sensor for both detecting card james and measuring the height if the stack of cards to determine when to stop shuffling when enough cards were in the stack, however as cards are much thinner than 1cm this couldn't be done. In the end only card jamming detection could be done with the hardware at the resolution.
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/sensor_test.png" alt="aREST Interface Design" width="300px">
+  <img src="./Documentation%20Resources/sensor_test.png" alt="aREST Interface Design" width="500px">
 </div>
 
 ### Motor Timing Testing for number of Cards Shuffled
 Testing and claibration was done on the  motor timings. It was found that the amount of cards being shuffled was much higher than expected dto the point the motors would continue running even after the maximum amount of cards the chasis could hold had already been shuffled. This called for proper testing and calibration.
 It was found that the amount of cards shuffled was around 5 times as much as expected as shown in the table above, therefore, the code was altered to reduce the motor running duration by a scale of 5. The below table is the resulting number of cards shuffled based off the number inputted and the test was done twice to confirm. This shows that the card shuffler can shuffle the correct amount of cards pretty close to the expected number, further calibration could get the accuracy correct every time but this would require a much longer calibration process to approach  the correct calibrated values which could be done in potential further work.
 <div style="display: flex; justify-content: center;">
-  <img src="./Documentation%20Resources/cards_before_shuffling.png" alt="Image 1" height="500px" style="margin-right: 20px;">
-  <img src="./Documentation%20Resources/card_calibration.png" alt="Image 2" height="500px">
+  <img src="./Documentation%20Resources/cards_before_shuffling.png" alt="Image 1" height="250px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/card_calibration.png" alt="Image 2" height="250px">
 </div>
 
 

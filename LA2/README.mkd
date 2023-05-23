@@ -14,9 +14,8 @@ Link: https://vimeo.com/829240523
 Video below, click on image if video doesn't run (will redirect to vimeo where video is hosted)
 
 
-[![Video of ESP 32 showing visuals of provisioning and ota update features](https://vimeo.com/829240523.jpg)](https://vimeo.com/829240523)
+[![Video of Card Shuffler]("./Documentation%20Resources/video_icon.png")](https://vimeo.com/829240523)
 
-<iframe src="https://player.vimeo.com/video/829240523?h=558b7c8ae7" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
 
 
 ## Software Design

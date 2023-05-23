@@ -17,7 +17,6 @@ Video below, click on image if video doesn't run (will redirect to vimeo where v
 [![Video of Card Shuffler](./Documentation%20Resources/video_icon.png)](https://vimeo.com/829240523)
 
 
-
 ## Software Design
 The software is composed of two components, the aREST Interface and the Arduino code.
 
@@ -54,7 +53,37 @@ The following components were used in the hardware design of the card shuffler p
 
 These components are connected together along with the 3D printed chassis as shown in the relevant images in the connections section
 
-### Connections
+### Hardware Connections
+
+The following hardware connections are required for the code:
+
+// HC-SR04 Sensor declarations
+#define trigPin 17  // connected to A2_I34
+#define echoPin 16  // connected to A1_DAC1
+#define led 10      // some GPIO pin for LED1
+#define led2 6      // some GPIO pin for LED2
+
+// Create the motor shield object with the default I2C address
+Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
+
+// And connect 2 DC motors to port M3 & M4 !
+Adafruit_DCMotor *L_MOTOR = AFMS.getMotor(4);
+Adafruit_DCMotor *R_MOTOR = AFMS.getMotor(3);
+
+Please make the following connections:
+
+- Connect the `trigPin` of the HC-SR04 ultrasonic sensor to digital pin 17 of the microcontroller.
+- Connect the `echoPin` of the HC-SR04 ultrasonic sensor to digital pin 16 of the microcontroller.
+- Connect the `LED1` pin to digital pin 10 of the microcontroller.
+- Connect the `LED2` pin to digital pin 6 of the microcontroller.
+
+Additionally, the code utilizes the Adafruit Motor Shield library to control DC motors. Connect two DC motors to ports M3 and M4 of the Adafruit Motor Shield.
+
+Note: Ensure that the motor shield is properly connected to the microcontroller and the necessary libraries are installed.
+
+Finally, please refer to the hardware documentation or pinout diagrams of your specific microcontroller board and ensure the correct pin mappings for the `trigPin`, `echoPin`, `LED1`, and `LED2` connections.
+
+
 
 **ESP32 and MotorDriver**
 
@@ -185,6 +214,30 @@ This project uses several libraries to manage different aspects of the device's 
 ### Requirements
 - Arduino IDE (or any compatible environment, e.g. vscode with platformio)
 - Necessary libraries installed
+
+**List of Libraries**
+- [WiFi](https://www.arduino.cc/en/Reference/WiFi)
+- [aREST by marcoschwartz](https://www.arduino.cc/reference/en/libraries/arest/)
+- [Wire](https://www.arduino.cc/en/Reference/Wire)
+- [Adafruit Motor Shield V2 Library by adafruit](https://www.arduino.cc/reference/en/libraries/adafruit-motor-shield-v2-library/)
+- [Adafruit SPIFlash by adafruit](https://www.arduino.cc/reference/en/libraries/adafruit-spiflash/)
+- [AsyncTCP by me-no-dev](https://github.com/me-no-dev/AsyncTCP)
+- [ESP Async WebServer by me-no-dev](https://github.com/me-no-dev/ESPAsyncWebServer)
+- [Adafruit BusIO](https://www.arduino.cc/reference/en/libraries/adafruit-busio/)
+- [SPI](https://www.arduino.cc/en/Reference/SPI)
+- [Adafruit ImageReader Library](https://www.arduino.cc/reference/en/libraries/adafruit-imagereader-library/)
+- [Adafruit Unified Sensor](https://www.arduino.cc/reference/en/libraries/adafruit-unified-sensor/)
+- [DNSServer](https://www.arduino.cc/en/Reference/DNSServer)
+- [ESPmDNS](https://www.arduino.cc/en/Reference/ESPmDNS)
+- [FS](https://www.arduino.cc/en/Reference/FS)
+- [HTTPClient](https://www.arduino.cc/en/Reference/HTTPClient)
+- [arduino-lmic by hamishcunningham](https://github.com/hamishcunningham/arduino-lmic)
+- [Preferences](https://www.arduino.cc/en/Reference/Preferences)
+- [Update](https://www.arduino.cc/en/Reference/Update)
+- [WebServer](https://www.arduino.cc/en/Reference/WebServer)
+- [WiFiClientSecure](https://www.arduino.cc/en/Reference/WiFiClientSecure)
+
+
 ### Constants
 The following constants are defined, use them wisely:
 -  `FIRMWARE_VERSION`: Current firmware version of the device.
@@ -200,7 +253,8 @@ The following constants are defined, use them wisely:
   - `/oppositeConstant`
   - `/alternating`
   - `/randomMotion`
-- The device uses an ultrasonic sensor to detect card jams. If a jam is detected, it stops the motors and turns on the red LED.
+  - `/customSuhffle`
+  - The device uses an ultrasonic sensor to detect card jams. If a jam is detected, it stops the motors and turns on the red LED.
 
 ## Provisioning Instructions:
 <div>
@@ -382,18 +436,48 @@ Presently, accessing shuffled cards can be a bit challenging. For future iterati
 **Enhanced Shuffling Mechanism**
 The current shuffling mechanism moves the bottom card from one of two piles. While this does shuffle the cards randomly, it does not allow for all possible card permeations. Future versions could look at incorporating a more advanced shuffling algorithm or mechanism. This could include random selection of cards from different positions within the pile.
 
-### What went well?
-Overall the project specifications were met. There has been a successful creation of a card shuffling IoT device.
+**User Interface**
+The user interface of this project is simple and functional, but there is room for enhancement. Currently, the user interface only allows for changing the number of cards, shuffling speed and different shuffling methods adding the abililty to adjust settings for the card guide or other features could prove useful.
 
-The chassis has a sturdy build and is seemingly in perfect condition after large amounts of use during testing. Also, due to the  3D printed nature of the design parts can easily be replaced or modified. This allows for easy maintainability, scalability and upgrades or maybe alterations for users specific needs such as different card sizes. 
+**Connectivity and IoT Security**
+The current project utilizes aREST.js for network connectivity, which, while functional, presents certain limitations particularly concerning security. Future iterations would benefit from exploring alternative IoT platforms that provide enhanced security features such as AWS IoT or Google Cloud IoT.
+
+**Smartphone Integration**
+Integrating the card shuffler with a smartphone application could provide additional functionality and convenience. The smartphone app could allow users to control and monitor the shuffling process remotely, adjust settings, and receive notifications or alerts. This would enhance the user experience and provide more flexibility in using the card shuffler.
+
+### What went well?
+
+**Meeting Project Specifications**
+Overall, the project successfully met its specifications, resulting in the creation of a functional card shuffling IoT device. The device is capable of shuffling cards, detecting card jams, and providing a user interface for control and monitoring.
+
+**Sturdy Chassis Design**
+The chassis of the device has a sturdy build and remains in excellent condition even after extensive testing. The 3D printed nature of the design allows for easy maintainability, scalability, and upgrades. Parts can be easily replaced or modified, providing flexibility for future improvements or alterations to accommodate different card sizes or design preferences.
+
+**Functional User Interface**
+The user interface of the device is simple and functional. Users can control the number of cards to shuffle, adjust the shuffling speed, and choose different shuffling methods. The implementation of REST calls and WiFi connectivity provides a convenient way to interact with the device remotely.
+
+**Ease of Documentation Updates**
+During the project, the importance of documentation became evident. Although there were some improvements to be made in the documentation process, updating the documentation as the project progressed was relatively easy due to the use of Markdown format. This allowed for clear and organized documentation, facilitating future development, troubleshooting, and sharing of the project.
+
+**Time Management and Progress**
+The project benefited from good time management practices, ensuring consistent and steady progress. The order in which tasks were completed was well-planned and logical, allowing for efficient development and troubleshooting. Regular tracking of progress and adherence to timelines helped maintain momentum and deliver the project within the expected timeframe.
+
+**Testing and Debugging**
+Thorough testing and debugging played a crucial role in the success of the project. Testing was conducted at various stages to ensure the functionality and reliability of the device. Issues and bugs were identified and addressed promptly, resulting in a stable final product. However, further improvements could be made in expanding the test coverage and implementing automated testing procedures.
+
+**Learning and Skill Development**
+The project provided valuable opportunities for learning and skill development. Through hands-on implementation, I gained practical experience in various aspects of hardware integration, software development, and IoT connectivity as well as some other skills such as using Fusion 360 and CAD design.
+
+
 
 ## Additional Resources and References
 
 Below are some important resources and references that will provide further understanding and context to the project:
 
+
 1. **Arduino Programming Language (API)**: This is the main reference to understand the Arduino Programming Language used to program the microcontroller in this project. You can find it [here](https://www.arduino.cc/reference/en/).
 
-2. **WiFi.h**: This library provides the necessary functions to connect to Wi-Fi networks and set up an access point. Check out the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi).
+2. **WiFi.h**: This library provides the necessary functions to connect to Wi-Fi networks and set up an access point. Check out the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi). Course notes on WiFI based provisioning: https://iot.unphone.net/#wifi-based-provisioning
 
 3. **WebServer.h**: This library is used to create a simple HTTP server on the ESP32. View the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer).
 
@@ -407,10 +491,13 @@ Below are some important resources and references that will provide further unde
 
 8. **aREST Library**: Here is the [aREST library](https://arest.io/) that makes building IoT devices easier.
 
-9. **Arduino OTA Updates**: Check out this [tutorial](https://randomnerdtutorials.com/esp32-over-the-air-ota-programming/) to understand more about OTA updates in Arduino.
+9. **Arduino OTA Updates**: Check out this [tutorial](https://randomnerdtutorials.com/esp32-over-the-air-ota-programming/) to understand more about OTA updates in Arduino. Course notes on OTA updates: https://iot.unphone.net/#over-the-air-updates-ota
 
-10. **Motor Setup**: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-a-robocar.mkd
-11. **Ultrasonic Sensor HC-SR04 Setup Instructions** found here: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-ultrasonicsensors.mkd
+10. **Motor Setup**: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-a-robocar.mkd  and https://iot.unphone.net/#a-simple-robot-car
+
+11. **Ultrasonic Sensor HC-SR04 Setup Instructions** found here: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-ultrasonicsensors.mkd and https://iot.unphone.net/#ultrasonic-sensors
+
+12. **ESP32 S3**: Programming guide: https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html and course notes: https://iot.unphone.net/#esp-idf-freertos-and-the-esp32-arduino-core
 
 ## Contact
 - You can reach me at [egoodbrand1@sheffield.ac.uk](mailto:egoodbrand1@sheffield.ac.uk) for any queries.

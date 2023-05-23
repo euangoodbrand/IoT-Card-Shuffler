@@ -14,7 +14,7 @@ Link: https://vimeo.com/829240523
 Video below, click on image if video doesn't run (will redirect to vimeo where video is hosted)
 
 
-[![Video of Card Shuffler]("./Documentation%20Resources/video_icon.png")](https://vimeo.com/829240523)
+[![Video of Card Shuffler](./Documentation%20Resources/video_icon.png)](https://vimeo.com/829240523)
 
 
 

@@ -9,11 +9,17 @@ This is the documentation for a Card Shuffler device, which is controlled over W
 
 ## Video Demonstration
 
-<figure class="video_container">
-  <video controls="true" allowfullscreen="true" poster="./Documentation%20Resources/video_icon.png">
-    <source src="./Documentation%20Resources/Card_Shuffler_Demonstration_Video.mp4" type="video/mp4">
-  </video>
-</figure>
+Link: https: vimeo.com/user197450782/
+
+
+Video below, click on image if video doesn't run (will redirect to vimeo where video is hosted)
+
+
+[![Video of ESP 32 showing visuals of provisioning and ota update features](https://i.vimeocdn.com/video/813183579.jpg)](vimeo.com/user197450782/
+)
+
+<iframe src="https://player.vimeo.com/video/829240523?h=558b7c8ae7" width="640" height="564" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+
 
 ## Software Design
 The software is composed of two components, the aREST Interface and the Arduino code.
@@ -136,7 +142,7 @@ The 3D Chassis is split into two main parts. The card shuffler and the Motor hou
 
 The card shuffler is made of 10 different 3D printed parts and is assembled like this:
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/3D_print_assembly.jpg" alt="3D_print_assembly.jpg" width="300px">
+  <img src="./Documentation%20Resources/3D_print_assembly.jpg" alt="3D_print_assembly.jpg" width="500px">
 </div>
 
 **Motor Housing**
@@ -145,8 +151,8 @@ The motor housing is composed of 4four 3D printed parts that are put together as
 
 
 <div style="display: flex; justify-content: center;">
-  <img src="./Documentation%20Resources/motor_holder_front.jpg" alt="MH Front" height="500px" style="margin-right: 20px;">
-  <img src="./Documentation%20Resources/motor_holder_back.jpg" alt="MH back" height="500px">
+  <img src="./Documentation%20Resources/motor_holder_front.jpg" alt="MH Front" height="300px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_holder_back.jpg" alt="MH back" height="300px">
 </div>
 
 ## Libraries Used
@@ -201,7 +207,7 @@ The following constants are defined, use them wisely:
 
 ## Provisioning Instructions:
 <div>
-  <img src="./Documentation%20Resources/Wifi_networking_page.png" alt="Wifi_networking_page" width="300px">
+  <img src="./Documentation%20Resources/Wifi_networking_page.png" alt="Wifi_networking_page" width="400px">
 </div>
 
 The Card Shuffler also has provisioning capability allowing connection to any Wifi and easy setup.
@@ -365,7 +371,7 @@ Good documentation practices are crucial not only for project management but als
 More research could have gone into other similar designs that already exist. If more research was done then maybe it would have required less iterations to get to a working solution. Below is an image of the 3D parts printed that didn't end up in the final design due to different problems.
 
 <div style="text-align: center;">
-  <img src="./Documentation%20Resources/iteration_box.jpg" alt="iteration_box" width="300px">
+  <img src="./Documentation%20Resources/iteration_box.jpg" alt="iteration_box" width="400px">
 </div>
 
 ### Future Improvements

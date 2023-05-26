@@ -1,5 +1,6 @@
 // Import required libraries
 #include <WiFi.h>
+#include <WebServer.h>
 #include <aREST.h>
 #include <Wire.h>
 #include <Adafruit_MotorShield.h>
@@ -18,7 +19,7 @@
 #define led2 6  // some GPIO pin for LED2
 
 // Create the motor shield object with the default I2C address
-Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
+Adafruit_MotorShield AFMS = Adafruit_MotorShield();
 
 // And connect 2 DC motors to port M3 & M4 !
 Adafruit_DCMotor *L_MOTOR = AFMS.getMotor(4);
@@ -27,66 +28,155 @@ Adafruit_DCMotor *R_MOTOR = AFMS.getMotor(3);
 // Create aREST instance
 aREST rest = aREST();
 
-// WiFi parameters
+// Personal WiFi parameters (0verridden by network provisioning)
 const char* ssid = "iPhone";
 const char* password = "password555";
 
-// The port to listen for incoming TCP connections 
-#define LISTEN_PORT           80
+// Access point (AP) settings
+const char *apSSID = "MyESP32AP";
+const char *apPassword = "mypassword";
 
-// Create an instance of the server
-WiFiServer server(LISTEN_PORT);
+WebServer server(80);
 
-// Functions
+bool startOTAUpdate = false;
+
+// Function to stop the motors
 int stop(String message);
-int oppositeConstant(String message);
-int alternating(String message);
-int randomMotion(String message);
-int customShuffle(String command);
-void performOTAUpdate();
 
+// Function to run the motors in opposite directions at a constant speed
+int oppositeConstant(String message);
+
+// Function to run the motors alternatively at a constant speed
+int alternating(String message);
+
+// Function to run the motors randomly at a constant speed
+int randomMotion(String message);
+
+// Function to perform a custom shuffling operation
+int customShuffle(String command);
+
+// Function to perform OTA firmware update
+void performOTAUpdate();
 
 /**
  * @brief Stops both motors.
- * 
- * This function is designed to stop the operation of both motors. It sets the speed of both motors to 0 
+ *
+ * This function is designed to stop the operation of both motors. It sets the speed of both motors to 0
  * and releases them, effectively bringing them to a stop.
  *
- * @param command An input string command, not used in the current function context.
+ * @param message An input string message, not used in the current function context.
  * @return Returns 1 indicating successful stop of motors.
  */
-int stop(String command) {
-  // Print a message to the serial monitor
+int stop(String message) {
   Serial.println("Stopping");
-
-  // Stop the left motor by setting its speed to 0 and releasing it
+  // Stop both motors
   L_MOTOR->setSpeed(0);
   L_MOTOR->run(RELEASE);
 
-  // Stop the right motor by setting its speed to 0 and releasing it
   R_MOTOR->setSpeed(0);
   R_MOTOR->run(RELEASE);
 
-  // Return 1 to indicate that the motors were successfully stopped
   return 1;
 }
 
 /**
- * @brief Sets up the device on startup.
+ * @brief Handle root URL for displaying available WiFi networks and a form to enter credentials.
  *
- * This function is called once on system startup. It initializes the Serial interface, the motor shield, 
- * ultrasonic sensor, LEDs, functions for REST calls, WiFi connection, and server. It also sets the name and ID 
- * of the device for REST calls and checks for firmware updates. 
+ * This function is the request handler for the root URL ("/"). It scans and retrieves the available WiFi networks
+ * and displays them in an HTML page. It also provides a form for users to enter their WiFi credentials and submit them.
+ * Upon submission, the handleConnect() function is called.
  */
-void setup(void)
-{  
-  // Initialize Serial communication at a baud rate of 115200
+void handleRoot() {
+  String html = "<html><head><title>ESP32 Provisioning</title></head>";
+  html += "<body><h1>Available WiFi Networks:</h1>";
+
+  // Scan for available WiFi networks
+  int n = WiFi.scanNetworks();
+  if (n == 0) {
+    html += "<p>No networks found.</p>";
+  } else {
+    html += "<ul>";
+    for (int i = 0; i < n; i++) {
+      html += "<li>";
+      html += WiFi.SSID(i);
+      html += "</li>";
+    }
+    html += "</ul>";
+  }
+
+  // Display the WiFi credentials form
+  html += "<h2>Enter your WiFi credentials:</h2>";
+  html += "<form method=\"post\" action=\"/connect\">";
+  html += "SSID: <input type=\"text\" name=\"ssid\"><br>";
+  html += "Password: <input type=\"password\" name=\"password\"><br>";
+  html += "<input type=\"submit\" value=\"Connect\">";
+  html += "</form>";
+  html += "</body></html>";
+  server.send(200, "text/html", html);
+}
+
+/**
+ * @brief Handle the connection request with the provided WiFi credentials.
+ *
+ * This function is the request handler for the connection URL ("/connect") after submitting the WiFi credentials form.
+ * It attempts to connect to the specified WiFi network using the provided SSID and password. If the connection is successful,
+ * it displays the connected network information. If the connection fails, it redirects back to the root URL ("/").
+ */
+void handleConnect() {
+  String ssid = server.arg("ssid");
+  String password = server.arg("password");
+
+  // Switch to STA mode and begin connecting to the specified WiFi network
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid.c_str(), password.c_str());
+
+  unsigned long startTime = millis();
+  unsigned long connectionTimeout = 20000; // 20 seconds timeout
+
+  // Wait until the connection is established or the timeout is reached
+  while (WiFi.status() != WL_CONNECTED) {
+    if (millis() - startTime > connectionTimeout) {
+      Serial.println("Connection timed out.");
+      server.sendHeader("Location", "/", true);
+      server.send(302, "text/plain", "Failed to connect to WiFi. Redirecting...");
+      return;
+    }
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+
+  // Display the IP address
+  Serial.print("Successfully connected to the WiFi network. IP Address: ");
+  Serial.println(WiFi.localIP());
+
+  // Display the connected network information
+  String html = "<html><head><title>ESP32 Provisioning</title></head>";
+  html += "<body><h1>Connected to WiFi:</h1>";
+  html += "<p>SSID: ";
+  html += ssid;
+  html += "</p><p>IP address: ";
+  html += WiFi.localIP().toString();
+  html += "</p>";
+  html += "<p>Press the button connected to the breadboard to start the OTA update.</p>";
+  html += "</body></html>";
+  server.send(200, "text/html", html);
+}
+
+/**
+ * @brief Set up the device on startup.
+ *
+ * This function is called once on system startup. It initializes the Serial interface, the motor shield,
+ * ultrasonic sensor, LEDs, functions for REST calls, WiFi connection, and server. It also sets the name and ID
+ * of the device for REST calls and checks for firmware updates.
+ */
+void setup() {
+  // Start Serial communication at a baud rate of 115200
   Serial.begin(115200);
 
   // Initialize the motor shield
-  AFMS.begin();  
+  AFMS.begin();
 
-  // Set the pin mode for the ultrasonic sensor pins and LED pins
+  // Initialize Ultrasonic Sensor
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
   pinMode(led, OUTPUT);
@@ -98,100 +188,86 @@ void setup(void)
   rest.function("alternating", alternating);
   rest.function("randomMotion", randomMotion);
   rest.function("customShuffle", customShuffle);
-      
-  // Set the ID and name for the device, these values will be used for the REST calls
+
+  // Set the name and ID for the device
   rest.set_id("1");
   rest.set_name("card_shuffler");
-  
-  // Connect to the WiFi network using the given ssid and password
+
+  // Connect to the WiFi network using the specified SSID and password
+  WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-  // Wait until the connection is established
+
+  // Wait until connected to the WiFi network
   while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
   }
   Serial.println("");
   Serial.println("WiFi connected");
- 
-  // Start the server for incoming REST calls
+
+  // Start the server on port 80
   server.begin();
   Serial.println("Server started");
-  
-  // Print the local IP address to the Serial monitor
+
+  // Print the local IP address
+  Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
 
-  // Perform an OTA update check after the WiFi connection is established
-  performOTAUpdate();  
+  // Perform OTA update check
+  performOTAUpdate();
 }
-
 
 /**
  * @brief Main program loop, executed repeatedly while the device is powered on.
  *
- * This loop checks for incoming REST calls, performs ultrasonic jamming detection, and controls the system LEDs
- * according to the detected distance. If a jam is detected (distance < 4 cm), it stops all motors and turns on the red LED.
+ * This loop handles incoming REST calls, performs ultrasonic jamming detection, and controls the system LEDs
+ * based on the detected distance. If a jam is detected (distance < 4 cm), it stops all motors and turns on the red LED.
  * If no jam is detected, the green LED is lit.
  */
 void loop() {
-  
-  // Handle incoming REST calls
-  WiFiClient client = server.available();
-  if (!client) {
-    // No client connected, return from the loop
-    return;
-  }
-  // Wait until client data is available
-  while(!client.available()){
-    delay(1);
-  }
-  // Handle the REST call
-  rest.handle(client);
+  // Handle REST calls
+  server.handleClient();
 
-  // Ultrasonic jamming detection process
+  // Check for OTA updates
+  if (startOTAUpdate) {
+    startOTAUpdate = false;
+    performOTAUpdate();
+  }
+
+
+  // Ultrasonic jamming detection
   long duration, distance;
-  // Send a low pulse to the trigPin
-  digitalWrite(trigPin, LOW);  
-  delayMicroseconds(2);
-
-  // Send a high pulse to the trigPin
-  digitalWrite(trigPin, HIGH);
-  delayMicroseconds(10); 
   digitalWrite(trigPin, LOW);
-
-  // Measure the duration of the pulse on the echoPin
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
   duration = pulseIn(echoPin, HIGH);
-
-  // Calculate the distance using the speed of sound ( 29.1 μs/cm )
   distance = (duration/2) / 29.1;
-  
-  // Print the calculated distance to the serial monitor
+
+  // Print distance to the serial monitor
   Serial.print("Distance: ");
   Serial.print(distance);
   Serial.println(" cm");
-  
-  // Jamming detection happens here
-  if (distance < 4) {
-    // If a jam is detected (distance < 4cm), turn on the red LED
-    digitalWrite(led,HIGH); 
-    digitalWrite(led2,LOW);
 
-    // Stop all motors if a jam is detected
-    stop("jam");  
+  // Jamming detection
+  if (distance < 4) {
+    digitalWrite(led, HIGH); // Turn on red LED when a jam is detected
+    digitalWrite(led2, LOW);
+    stop("jam");  // Stop all motors if a jam is detected
+  } else {
+    digitalWrite(led, LOW);
+    digitalWrite(led2, HIGH); // Turn on green LED when there's no jam
   }
-  else {
-    // If no jam is detected, turn on the green LED
-    digitalWrite(led,LOW);
-    digitalWrite(led2,HIGH); 
-  }
-  // Wait for half a second before the next detection
-  delay(500);
+  delay(500); // Wait for half a second before next detection
 }
+
 
 /**
  * @brief This function runs two motors in the opposite direction at a constant speed for a given duration.
  *
  * @param command A string that contains the desired speed and number of cards to be shuffled, separated by a comma.
- * 
+ *
  * @return Returns 1 upon successful completion.
  */
 int oppositeConstant(String command) {
@@ -232,7 +308,7 @@ int oppositeConstant(String command) {
  * @brief This function runs two motors alternatively at a constant speed for a given duration.
  *
  * @param command A string that contains the desired speed and number of cards to be shuffled, separated by a comma.
- * 
+ *
  * @return Returns 1 upon successful completion.
  */
 int alternating(String command) {
@@ -282,7 +358,7 @@ int alternating(String command) {
  * @brief This function runs either of the two motors randomly at a constant speed for a given duration.
  *
  * @param command A string that contains the desired speed and number of cards to be shuffled, separated by a comma.
- * 
+ *
  * @return Returns 1 upon successful completion.
  */
 int randomMotion(String command) {
@@ -336,9 +412,9 @@ int randomMotion(String command) {
 /**
  * @brief This function runs two motors with a custom shuffling operation for a given speed and number of cards.
  *
- * @param command A string that contains the desired speed, total number of cards, 
+ * @param command A string that contains the desired speed, total number of cards,
  * number of left cards, and number of right cards to be shuffled, separated by commas.
- * 
+ *
  * @return Returns 1 upon successful completion.
  */
 int customShuffle(String command) {
@@ -360,7 +436,7 @@ int customShuffle(String command) {
 
   // Convert the split strings to integers
   int shufflingSpeed = speedStr.toInt();
-  int numCards = numCardsStr.toInt(); 
+  int numCards = numCardsStr.toInt();
   int numLeftCards = numLeftCardsStr.toInt();
   int numRightCards = numRightCardsStr.toInt();
 
@@ -391,47 +467,33 @@ int customShuffle(String command) {
 }
 
 /**
- * @brief This function checks for firmware updates and performs an over-the-air (OTA) update if one is available.
+ * @brief Perform OTA update check and update if a new firmware version is available.
  *
- * It connects to a specified server to check for updates, downloads the new firmware if available, 
- * and then applies the update. If the update is successful, the system will restart. 
- * Error messages will be logged to the console if any step fails.
- *
- * Please note, for the update to begin, the new firmware size must be less than the available program space.
+ * This function performs an OTA (Over-The-Air) update check by connecting to the specified update server.
+ * If a new firmware version is available, it downloads and installs the update. The update server URL,
+ * firmware version, and firmware file name are defined in the global constants at the beginning of the sketch.
  */
 void performOTAUpdate() {
-  // Print to the console
   Serial.println("Checking for firmware updates...");
-
-  // Create an HTTPClient object
   HTTPClient http;
 
   // Specify the URL for the firmware update
   String firmwareUrl = String("http://") + FIRMWARE_SERVER_IP_ADDR + ":" + FIRMWARE_SERVER_PORT + "/firmware.bin";
 
-  // Start a connection to the server
   http.begin(firmwareUrl);
   int httpCode = http.GET();
-
-  // Check the HTTP response code
   if (httpCode > 0) {
     if(httpCode == HTTP_CODE_OK) {
-      // Get the size of the new firmware
       int contentLength = http.getSize();
 
-      // Start the OTA Update
+      // Start OTA Update
       if (Update.begin(contentLength)) {
-        // Get a pointer to the HTTP response stream
         WiFiClient * stream = http.getStreamPtr();
-
-        // Write the new firmware to the flash memory
         if (Update.writeStream(*stream) == contentLength) {
-          // Finalize the update and restart the system if it was successful
           if (Update.end(true)) {
             Serial.println("OTA update success!");
             ESP.restart();
           } else {
-            // Log an error message if the update failed
             Serial.printf("Error: %s\n", Update.errorString());
           }
         } else {
@@ -447,6 +509,6 @@ void performOTAUpdate() {
     Serial.printf("Unable to connect to the server: %s\n", http.errorToString(httpCode).c_str());
   }
 
-  // End the HTTP connection
   http.end();
 }
+

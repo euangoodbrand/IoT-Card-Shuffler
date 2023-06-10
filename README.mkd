@@ -1,0 +1,504 @@
+
+# Card Shuffler
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/full_setup_1.jpg" alt="full_setup_1" width="600px">
+</div>
+
+This is the documentation for a Card Shuffler device, which is controlled over Wi-Fi using an aREST interface and has built-in jamming detection.
+
+## Video Demonstration
+
+Link: https://vimeo.com/829240523
+
+Video below, click on image if video doesn't run (will redirect to vimeo where video is hosted)
+
+
+[![Video of Card Shuffler](./Documentation%20Resources/video_icon.png)](https://vimeo.com/829240523)
+
+
+## Software Design
+The software is composed of two components, the aREST Interface and the Arduino code.
+
+### aREST Interface Design
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/aREST Interface Diagram.png" alt="aREST Interface Design" width="600px">
+</div>
+
+The aREST interface must be easy to use and intuitive giving visual feedback to the user also. The design must also be simple and only include necessary features, no superfluous features should be on the interface and any features added should have a minimal design that is accessible. The interface was designed to have these features: Buttons for each shuffle (Riffle, Cut, Random and Custom) as well as a stop button. The user should have control over the device therefore, the user can choose the number of cards they wish to shuffle, control the speed of the shuffling via a slider and customise their own shuffle (custom shuffle). The slider was used to that the user doesn’t' enter a value outside of the motors capacity.
+
+### Arduino code
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/Software diagram.png" alt="Software diagram" width="600px">
+</div>
+The code must be able to interact with the aREST interface as well as perform certain functions. As this is an IoT device it must firstly Connect to Wi-Fi via networking and be able to perform OTA firmware updates.
+The code must also be able to control the  motors in the necessary ways to shuffle a Riffle-Shuffle, Cutting a deck, Random Shuffle and a Custom Shuffle whilst also taking into account the users selected number of cards and shuffling speed in any calculations.
+The device also has an ultrasonic sensor, the code must stop all the motors whenever a distance below a certain threshold is detected which would be a card jam, the motors need to stop to ensure  no card damage is caused. Any necessary information should also be printed to the serial monitor or given to the user on the aREST interface. The code must also  incorporate a button to start Firmware updates and LEDs to inform the user of card jams detected.
+
+## Hardware Design
+
+The following components were used in the hardware design of the card shuffler project:
+
+- Adafruit ESP32 Featherboard: The main microcontroller for this project, running the main logic and controlling the other hardware components. It's a powerful board with built-in Wi-Fi capabilities.
+
+- Adafruit Motor Shield: This is used to control the DC motors which power the card shuffling mechanism. (Motor setup instructions were found here: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-a-robocar.mkd)
+
+- DC Motors: Two DC motors are used, which are controlled by the Motor Shield. These are responsible for the actual shuffling operation.
+
+- Ultrasonic Sensor: An ultrasonic sensor is used to detect jams and stop the shuffler in case of issues.
+
+- LEDs: Two LEDs are used to visually indicate the system status.
+
+- Breadboard: Used for prototyping and connecting the various components.
+
+These components are connected together along with the 3D printed chassis as shown in the relevant images in the connections section
+
+### Hardware Connections
+
+The following hardware connections are required for the code:
+
+// HC-SR04 Sensor declarations
+#define trigPin 17  // connected to A2_I34
+#define echoPin 16  // connected to A1_DAC1
+#define led 10      // some GPIO pin for LED1
+#define led2 6      // some GPIO pin for LED2
+
+// Create the motor shield object with the default I2C address
+Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
+
+// And connect 2 DC motors to port M3 & M4 !
+Adafruit_DCMotor *L_MOTOR = AFMS.getMotor(4);
+Adafruit_DCMotor *R_MOTOR = AFMS.getMotor(3);
+
+Please make the following connections:
+
+- Connect the `trigPin` of the HC-SR04 ultrasonic sensor to digital pin 17 of the microcontroller.
+- Connect the `echoPin` of the HC-SR04 ultrasonic sensor to digital pin 16 of the microcontroller.
+- Connect the `LED1` pin to digital pin 10 of the microcontroller.
+- Connect the `LED2` pin to digital pin 6 of the microcontroller.
+
+Additionally, the code utilizes the Adafruit Motor Shield library to control DC motors. Connect two DC motors to ports M3 and M4 of the Adafruit Motor Shield.
+
+Note: Ensure that the motor shield is properly connected to the microcontroller and the necessary libraries are installed.
+
+Finally, please refer to the hardware documentation or pinout diagrams of your specific microcontroller board and ensure the correct pin mappings for the `trigPin`, `echoPin`, `LED1`, and `LED2` connections.
+
+
+
+**ESP32 and MotorDriver**
+
+The ESP32 is connected to the Motordriver and the Motors in the following configuration. The setup also requires two batteries, abattery to power the motors and a lithium battery to allow the card shuffler to work without being plugged in.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/ESP_Motordriver_and_motors_batteries.jpg" alt="ESP_Motordriver_and_motors_batteries" width="300px">
+</div>
+
+**Ultrasonic Sensor**
+
+The ultrasonic sensor is attatched to a seperate breadboard so that it can be mounted inside the chassis, this is to allow the ultrasonic sensor to be able to detect card james as well as give the user visuals of the LEDs attatched to that same breadboard. The button for OTA updates is also on this breadboard to allow the user to be able to press it easily for new firmware.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/ultransonic_sensor_setup_LED_and_OTA_button.jpg" alt="ultransonic_sensor_setup_LED_and_OTA_button" width="300px">
+</div>
+
+The ultrasonic sensor breaboard can be easily mounted to the chassis using the sticky bottom of the breadboard as shown below:
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/ultrasonic_sensor_mounted.jpg" alt="ultrasonic_sensor_mounted" width="300px">
+</div>
+
+
+## 3D Printed Chassis
+
+The main structure of the card shuffler is a 3D printed chassis, designed to hold the cards and incorporate the mechanical parts needed for shuffling. The design should be simplistic and immediately obvious to the user how it functions such as where to put the cards. 
+
+### Chassis Design
+The components were designed using Fusion 360 software and printed using a P1P Bambu Labs 3D printer using Bambu Studio Slicer Software. All components were designed using measurements from a digital vernier callipers so that they have a high resolution of +- 0.05 mm. The 3D printer has a resolution of 0.1mm vertically and 0.4mm horizontally.
+
+The design is made up of 15 different components:
+
+**Sides**
+The sides are the main component holding the design together, they allow the other components to connect in a secure way and hole the cards in from their sides. They include holes for the shaft to spin inside. These were printed on a smooth 3D printing bed so that the inside wall of the sides is smooth allowing the lowest friction for the cards.
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/side_pieces.png" alt="side_pieces" width="300px">
+</div>
+
+**Spacers**
+The spacers create horizontal structure in the shuffler and dictate the width of the cards put into the chassis. The current design allows for cards of 91 mm * 73mm and other similar smaller sized cards. Too small cards will not work. Two different designs of spacers were created for the two different shaft variants.
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/card_holder_and_wall_seperators_v1.png" alt="card_holder_and_wall_seperators_v1" width="300px">
+</div>
+
+**Card holders**
+The card holders allow the cards to sit on top of them and slide off onto the motor shafts. They have a section removed to allow the easy removal and placing of cards as you are holding them. These pieces were also printed on a smooth 3D printing bed ass they make the most contact with the cards, this is to reduce friction. 
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/card_holder_and_wall_seperators.png" alt="card_holder_and_wall_seperators" width="300px">
+</div>
+
+**Card Blockers**
+The card blocks are designs to be able to slide vertically on the side pieces, this allows the careful calibration of the blockers to only allow one card to be shuffler each time by the motors. Depending on the card thickness they ca be adjusted accordingly, this is useful for cases such as mine where I have cards in sleeves and sometimes even double sleeves that are of different thicknesses.
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/card_blockers.png" alt="card_blockers" width="300px">
+</div>
+
+**Motor Shaft**
+There are two motor shaft designs v1 was found to be less effective than v2, both designs require the addition of rubber grips and are designed to hold specific rubber pieces, this is to ensure that the cards are pushed along by the motors as the plastic 3D printed is not enough to push the cards through. 
+
+<div style="display: flex; justify-content: center;">
+  <img src="./Documentation%20Resources/motor_shaft_v1.png" alt="motor_shaft_v1" height="500px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_shaft_v2.png" alt="motor_shaft_v2" height="500px">
+</div>
+
+The rubber bands are glued around the shaft like this:
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/rubber_pads.jpg" alt="rubber_pads.jpg" width="300px">
+</div>
+
+**Motor Holders**
+These pieces are designed to house the motors securely, this is so that only the rotation force is applied to the shafts and not the motors or chassis themselves. This ensures the secure and steady rotation of the motors and allows the motors to run at full speed despite the wight of the cards and the top weights. This component is designed to use the small piece sticking out of the motors to securely fasten it inside.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/motor_holders_v2.png" alt="motor_holders_v2" width="300px">
+</div>
+
+### Assembly
+
+The 3D Chassis is split into two main parts. The card shuffler and the Motor housing which are then connected via the gears. 
+
+**Card Shuffler**
+
+The card shuffler is made of 10 different 3D printed parts and is assembled like this:
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/3D_print_assembly.jpg" alt="3D_print_assembly.jpg" width="500px">
+</div>
+
+**Motor Housing**
+
+The motor housing is composed of 4four 3D printed parts that are put together as so, there is a front and back to show how the motors are housed and how the gears are positioned on the front:
+
+
+<div style="display: flex; justify-content: center;">
+  <img src="./Documentation%20Resources/motor_holder_front.jpg" alt="MH Front" height="300px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/motor_holder_back.jpg" alt="MH back" height="300px">
+</div>
+
+## Libraries Used
+
+This project uses several libraries to manage different aspects of the device's functionality. Here's a list of these libraries and their roles:
+
+- `WiFi.h`: This library is used for managing Wi-Fi connections, allowing the device to connect to the internet. [More Information](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi)
+
+- `aREST.h`: This library is used for handling RESTful services, providing a simple way to interact with the device over HTTP. [More Information](https://github.com/marcoschwartz/aREST)
+
+- `Wire.h`: This library is used for managing I2C communications, which are used for communicating with the motor shield. [More Information](https://www.arduino.cc/en/Reference/Wire)
+
+- `Adafruit_MotorShield.h`: This library is used for controlling the Adafruit MotorShield, which is used for controlling the motors. [More Information](https://learn.adafruit.com/adafruit-motor-shield-v2-for-arduino/install-software)
+
+- `HTTPClient.h`: This library is used for making HTTP requests. It's used in this project to check for and download firmware updates. [More Information](https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient)
+
+- `Update.h`: This library is used for performing OTA updates. It's used to apply the firmware updates downloaded by HTTPClient. [More Information](https://github.com/espressif/arduino-esp32/tree/master/libraries/Update)
+
+## Hardware requirements
+- ESP32 Featherboard or other WiFi-enabled microcontroller
+- Adafruit MotorShield Board
+- HC-SR04 ultrasonic sensor
+- Two DC motors
+- Two LEDs (for jamming indication)
+- Button for OTA Updates
+- 3D Printed Case (Stl files can be found in Hardware Design Folder)
+- Some cards to shuffle :) (specifically 93mm * 71mm)
+- Jumper cables
+- Rubber grips for the motor shafts
+- Small weights for holding the cards flat
+
+## Software
+### Requirements
+- Arduino IDE (or any compatible environment, e.g. vscode with platformio)
+- Necessary libraries installed
+
+**List of Libraries**
+- [WiFi](https://www.arduino.cc/en/Reference/WiFi)
+- [aREST by marcoschwartz](https://www.arduino.cc/reference/en/libraries/arest/)
+- [Wire](https://www.arduino.cc/en/Reference/Wire)
+- [Adafruit Motor Shield V2 Library by adafruit](https://www.arduino.cc/reference/en/libraries/adafruit-motor-shield-v2-library/)
+- [Adafruit SPIFlash by adafruit](https://www.arduino.cc/reference/en/libraries/adafruit-spiflash/)
+- [AsyncTCP by me-no-dev](https://github.com/me-no-dev/AsyncTCP)
+- [ESP Async WebServer by me-no-dev](https://github.com/me-no-dev/ESPAsyncWebServer)
+- [Adafruit BusIO](https://www.arduino.cc/reference/en/libraries/adafruit-busio/)
+- [SPI](https://www.arduino.cc/en/Reference/SPI)
+- [Adafruit ImageReader Library](https://www.arduino.cc/reference/en/libraries/adafruit-imagereader-library/)
+- [Adafruit Unified Sensor](https://www.arduino.cc/reference/en/libraries/adafruit-unified-sensor/)
+- [DNSServer](https://www.arduino.cc/en/Reference/DNSServer)
+- [ESPmDNS](https://www.arduino.cc/en/Reference/ESPmDNS)
+- [FS](https://www.arduino.cc/en/Reference/FS)
+- [HTTPClient](https://www.arduino.cc/en/Reference/HTTPClient)
+- [arduino-lmic by hamishcunningham](https://github.com/hamishcunningham/arduino-lmic)
+- [Preferences](https://www.arduino.cc/en/Reference/Preferences)
+- [Update](https://www.arduino.cc/en/Reference/Update)
+- [WebServer](https://www.arduino.cc/en/Reference/WebServer)
+- [WiFiClientSecure](https://www.arduino.cc/en/Reference/WiFiClientSecure)
+
+
+### Constants
+The following constants are defined, use them wisely:
+-  `FIRMWARE_VERSION`: Current firmware version of the device.
+-  `FIRMWARE_SERVER_IP_ADDR`: IP address of the firmware server.
+-  `FIRMWARE_SERVER_PORT`: Port number of the firmware server.
+-  `apSSID`: SSID for the ESP32's access point.
+-  `apPassword`: Password for the ESP32's access point (and no, "password123" is not a good choice ~~ignore my password~~).
+
+
+## Setup and Usage
+- You can control the motors by sending requests to the following REST endpoints:
+  - `/stop`
+  - `/oppositeConstant`
+  - `/alternating`
+  - `/randomMotion`
+  - `/customSuhffle`
+  - The device uses an ultrasonic sensor to detect card jams. If a jam is detected, it stops the motors and turns on the red LED.
+
+## Provisioning Instructions:
+<div>
+  <img src="./Documentation%20Resources/Wifi_networking_page.png" alt="Wifi_networking_page" width="400px">
+</div>
+
+The Card Shuffler also has provisioning capability allowing connection to any Wifi and easy setup.
+
+These instructions will guide you through the process of provisioning your ESP device, so that it can connect to your Wi-Fi network and become accessible via its own access point.
+1.  **Put the ESP into bootloader mode:**
+ - Hold down the "boot" button on the ESP board, then press the "reset" button.
+ - Release the "reset" button, then release the "boot" button.
+2.  **Burn the code onto the ESP:**
+ - Use your preferred method to burn the code onto the ESP board.
+3.  **Connect to your computer and select the relevant port:**
+ - Connect your ESP board to your computer via USB.
+ - Select the relevant port in your programming software.
+ - Press the "reset" button to run the code.
+4.  **Connect to the access point created by the ESP:**
+ - The ESP will create its own access point, which you can connect to.
+ - Define a name and password for the access point.
+5.  **View the website from the ESP:**
+ - In a web browser, go to the URL http://192.168.4.1 to view the website hosted by the ESP.
+6.  **Enter your Wi-Fi credentials:**
+ - Type in the Wi-Fi credentials that you want the ESP to connect to.
+ - Make sure that your firewall is not blocking this connection.
+
+## OTA Update and Instructions:
+- The code includes an Over-The-Air (OTA) update mechanism. The device checks for updates from a specified server at startup and applies them if found.
+
+These instructions will guide you through the process of updating your ESP device over the air (OTA), using a Python server and compiled binary files.
+1.  **Ensure that your computer and ESP are on the same Wi-Fi network:**
+ - Connect your computer and ESP to the same Wi-Fi network.
+ - You can use a hotspot if you prefer.
+2.  **Find the IPv4 address of your computer's wireless LAN:**
+ - Open a new terminal and type "ipconfig".
+ - Look for the IPv4 address under the "Wireless LAN" section.
+3.  **Start a Python server:**
+ - Open another terminal window and type "python -m http.server 8000".
+ - This will start a server that listens on port 8000.
+4.  **Upload the sketch.ino file:**
+ - Use your preferred method to upload the sketch.ino file to your ESP board.
+5.  **Increment the firmware version:**
+ - Go to "Sketch" > "Export compiled binary" in your programming software.
+ - Save the binary file as "N.bin", where "N" is the version number you are updating to.
+ - Increment the version number in your sketch.
+6.  **Save the binary file to the Python server directory:**
+ - Save the binary file to the directory where you ran the Python server (step 3).
+ - Save it as "N.bin", where "N" is the version number you are updating to.
+7.  **Add a version.txt file:**
+ - Create a file called "version.txt" in the same directory as the binary file.
+ - Inside the file, add the integer version number that you are updating to.
+8.  **Reset the ESP board and open the serial monitor:**
+ - Reset the ESP board by pressing the "reset" button.
+ - Open the serial monitor in your programming software and select the correct port.
+9.  **Wait for the update to complete:**
+ - Press the button on the breadboard to start the updating process.
+ - The ESP board will connect to the Python server and download the new firmware.
+ - Wait for the update to complete.
+
+## Testing
+
+### Sensor Testing
+The sensor was tested at various distances measured with a calliper and these expected distances were compared to the actual read distances from the sensor, this showed that the sensor outputted results to the nearest cm. This changed the design direction as originally I has intended to use the ultrasonic sensor for both detecting card jams and measuring the height if the stack of cards to determine when to stop shuffling when enough cards were in the stack, however as cards are much thinner than 1cm this couldn't be done. In the end only card jamming detection could be done with the hardware at the resolution.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/sensor_test.png" alt="sensor_test" width="500px">
+</div>
+
+### Motor Timing Testing for number of Cards Shuffled
+Testing and calibration was done on the  motor timings. It was found that the amount of cards being shuffled was much higher than expected to the point the motors would continue running even after the maximum amount of cards the chassis could hold had already been shuffled. This called for proper testing and calibration.
+It was found that the amount of cards shuffled was around 5 times as much as expected as shown in the table above, therefore, the code was altered to reduce the motor running duration by a scale of 5. The below table is the resulting number of cards shuffled based off the number inputted and the test was done twice to confirm. This shows that the card shuffler can shuffle the correct amount of cards pretty close to the expected number, further calibration could get the accuracy correct every time but this would require a much longer calibration process to approach  the correct calibrated values which could be done in potential further work.
+<div style="display: flex; justify-content: center;">
+  <img src="./Documentation%20Resources/cards_before_shuffling.png" alt="cards_before_shuffling" height="250px" style="margin-right: 20px;">
+  <img src="./Documentation%20Resources/card_calibration.png" alt="card_calibration" height="250px">
+</div>
+
+### 3D Printed chassis testing and Iterative Design Process
+Before the motors were added to the design or the motor holders were even designed various testing has been done to ensure the chassis could shuffle cards before going forward with the electronic or software design and implementation. 
+Multiple iterations of the chassis were made and tested with slow improvements.
+The first iteration was printed at too low a quality and needed to be printed again using a higher resolution, the lower quality caused connections to not fit correctly and the shafts to grind as I cranked them which proved difficult meaning that the motors wouldn’t be able to spin them. 
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/3d_printer_settings.png" alt="3d_printer_settings" width="300px">
+</div>
+
+After a reprint at 0.1mm layer height there were other issues, due to the 3D printed bed temperature being too low the PLA material warped heavily causing the chassis to not fit together correctly and not sit flat on any surfaces.
+I increased the temperature of the hot bed to 55 degrees Celsius and the chassis now fit together correctly and the shafters rotated relatively smoothly, however I noticed the texture of the shafts was rougher than I expected, this was due to 3D printing the shafts horizontally and not vertically meaning the shafters were essentially made of many square cross sections rather than circular ones which is  not good for rotating parts. After reprinting these correctly the chassis worked and the shafts spun smoothly.
+The process was not finished though as the cards did not make contact with the shaft by a few mm,  even adding rubber grips didn't allow the cards to touch. Therefore, I redesigned new shafts and new spacers to house them. This meant the shaft was thicker and now made contact with the cards when rubber grips were added. 
+The device was now capable of shuffling but there was some holdups due to friction between the chassis and the cards. This was because the hot bed that my 3D printer came with was a textured bed meaning it applied a rough texture to all my 3D prints, this is normally good to break up the lines produced by a 3d printer but for parts requiring low friction this was an issue. 
+I researched compatible smooth hot beds and purchased one, after it arrived I reprinted the parts that made contact with the cards or shafts and had these areas face down on the printer bed so they adopted the smooth face, this also meant I had to buy a flat tool to help remove them as no texture made the 3D prints adhere to the bed.
+Finally, the last problem was the cards bending. Not all cards were able to stay perfectly flat and therefore, would not go under the card blocker and through the slot. This meant that weights like the ones in the image below were needed to apply constant downwards pressure. This also helped by adding extra downforce getting extra grip with the rubber.
+After this the cards printed very well and smoothly and the chassis design was complete.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/weights.jpg" alt="weights.jpg.jpg" width="300px">
+</div>
+
+
+### Unit Testing Arduino Code
+Unit testing was attempted but there are no standard built-in unit testing frameworks in C++ for Arduino (like JUnit for Java or unittest for Python). This code does not lend itself easily to unit testing, as it's largely dependent on hardware interactions and also on the aREST library. Also, the code would need to be largely refactored to allow for unit testing by abstracting the functions which would require  larger time frame than the project allows, and it would likely not be worth it due to most of the testing being reliant on hardware which unit tests cannot account for.
+
+### Acceptance Testing
+Acceptance testing seems to be the most appropriate type of testing for this project given the different components and the time allowed. 
+
+**Acceptance Criteria:**
+- The different shuffles must shuffle as expected.
+- The card counter should output the expected number of cards.
+- The progress bar should start when the cards start shuffling and finish at the same time the shuffling is over.
+- The card counter should always show the correct value for cards shuffled.
+- The ultrasonic sensor should correctly identify card jams.
+- The cards should not be damaged.
+- The user should be able to select the number of cards to shuffle.
+- The user should be able to select the speed of the shuffler.
+- The interface feedback (progress bar and cad counter) should reset for each new shuffle.
+
+The project has been tested from the perspective of the user as a whole to ensure that it meets the specifications that the user would expect. Each shuffle type has been tested with different numbers of cards and at different speeds. The results were that the shuffle types shuffled as expected, outputted the correct number of times even at different speeds and the progress bar and card counter were accurate in their timings and for the amount of cards shuffled throughout the process. the ultrasonic sensor correctly identified card jams and stops the motors as well as the stop button stopping the motors when pressed. The interface correctly resets when a new shuffle is performed.
+
+### Overall Testing
+|Test No.|Description|Expected Result|Actual Result|Successful Implementation?|
+|:----|:----|:----|:----|:----|
+|1|Test WiFi connectivity: Verify device can connect to WiFi network|Connection should be successful and stable|Connection was successful and stable|Yes|
+|1.1|Test different WiFi networks: Verify device can connect to multiple networks with varying security protocols (WEP, WPA2, WPA3, etc.)|The device should be able to connect to all supported types of networks|Device successfully connected to all tested networks|Yes|
+|1.2|Test WiFi signal strength: Verify device can connect to WiFi network from different distances|Device should maintain stable connection within the specified range|Stable connection was maintained within the specified range|Yes|
+|1.3|Test WiFi auto-reconnect: Verify that the device reconnects to the network after losing connectivity|Device should reconnect after the network is restored|Device reconnected after pressing the reset button|Yes|
+|2|Test OTA update functionality: Check if device can receive, process, and install updates via WiFi|Firmware update should occur without error|Firmware update was successful|Yes|
+|2.1|Test OTA update integrity: Check if updates install correctly without data corruption|The update should install and the system should work as intended after the update|Update installed correctly and system worked as intended|Yes|
+|2.2|Test OTA update roll-back: Verify if the device can revert to previous firmware version in case of an unsuccessful update|Device should be able to revert to previous firmware version if an update fails|Device reverted to previous firmware version after naming the old firmware as a new version|Yes|
+|3|Test Ultrasonic Sensor functionality: Verify sensor can measure and report accurate distances|Correct distance should be returned|Correct distance was returned|Yes|
+|4|Test Motor operation: Verify motors can run smoothly without errors|Motors should run without error|Motors ran without error|Yes|
+|5|Test stop() function: Verify that both motors stop when the function is called|Both motors should stop|Both motors stopped as expected|Yes|
+|6|Test oppositeConstant() function: Verify that motors can run in opposite directions when the function is called|Motors should run in opposite directions|Motors ran in opposite directions as expected|Yes|
+|7|Test alternating() function: Verify that motors can run alternately when the function is called|Motors should run alternately|Motors ran alternately as expected|Yes|
+|8|Test randomMotion() function: Verify that motors can run in random motions when the function is called|Motors should run in random motion|Motors ran in random motion as expected|Yes|
+|9|Test customShuffle() function: Verify that cards can be shuffled in a custom manner when the function is called|Cards should be shuffled customly|Cards were shuffled in a custom manner as expected|Yes|
+|10|Test the interface's connection with the device: Verify the UI can successfully interact with the device|Successful interaction with the device|Interaction with the device was successful|Yes|
+|11|Test shufflingSpeed adjustment on the interface: Verify that changes made on the interface reflect in the shuffling speed|Shuffling speed should change correctly|Shuffling speed changed correctly|Yes|
+|12|Test the 'oppositeConstant' button on the interface: Verify that pressing the button shuffles cards in an opposite constant manner|Cards should be shuffled in opposite constant manner|Cards were shuffled in opposite constant manner|Yes|
+|13|Test the 'alternating' button on the interface: Verify that pressing the button shuffles cards in an alternating manner|Cards should be shuffled in alternating manner|Cards were shuffled in alternating manner|Yes|
+|14|Test the 'randomMotion' button on the interface: Verify that pressing the button shuffles cards in a random motion|Cards should be shuffled in random motion|Cards were shuffled in random motion|Yes|
+|15|Test the progress bar and card count on the interface: Verify that the UI displays the correct progress and card count|Should display progress and count correctly|Progress and count were displayed correctly|Yes|
+|16|Test the OTA update notification: Verify that the device provides an alert or notification when an OTA update is available|The device should provide a timely notification when an OTA update is available|A timely notification was provided when an OTA update was available|Yes|
+|17|Test Ultrasonic Sensor calibration: Verify if the sensor can be properly calibrated for accurate distance measurement|The sensor should be correctly calibrated and provide accurate distance readings|Sensor was correctly calibrated and provided accurate readings|Yes|
+|18|Test if motors can resume after stop(): Verify if the motors can resume operation after the stop() function is called|Motors should resume operation without error|Motors resumed operation without error|Yes|
+|19|Test the responsiveness of the interface: Verify the interface reacts promptly to user interactions|The interface should respond quickly to all user interactions|The interface responded quickly to all user interactions|Yes|
+|20|Test the speed control of the motors: Verify if the speed of the motors can be controlled effectively|The speed of the motors should change correctly as per control inputs|The speed of the motors changed correctly as per control inputs|Yes|
+|21|Test card counting accuracy: Verify the device correctly counts the number of cards shuffled|The device should provide a correct count of cards shuffled|The device provided a correct count of cards shuffled|Yes|
+|22|Test the system's ability to handle different card types: Verify the device can handle different types of cards (e.g., plastic, paper, different sizes)|The device should be able to handle all supported card types effectively| The device could handle call standard card sizes below the size of 91mm * 71mm|Yes|
+
+## Self-Assessment
+
+Reflecting on this project, there are several areas where improvements can be made in future iterations and other projects.
+
+### Workspace Environment
+Maintaining a well-organized and properly equipped workspace is essential for efficiency and safety. For instance, filing parts of my 3D prints caused my mousepad to be frayed which is whatt I was building the project. This was my favourite mousepad so it's a shame, the lesson learnt is to have a proper setup when dealing with a project of this nature.
+
+### Hardware Understanding
+Greater knowledge and understanding of the hardware used in the project can lead to better design decisions and problem-solving. An instance from this project was a motor getting blown during testing. This could have been avoided with more comprehensive understanding of the motor's power requirements and operating conditions. In the future, I will look into hardware specifications further as well as their operating principles before integrating them into the design.
+
+### Documentation
+Good documentation practices are crucial not only for project management but also for troubleshooting and further development. During the course of this project, it was noticed that better documentation during the development phase, rather than close to the end, would have saved time and confusion. An example was not remembering which pin was assigned to which motor upon reassembly causing lots of wasted time. Going forward, regular updates to the documentation during the development phase will be implemented, detailing decisions, changes, and important specifications. 
+
+### More research
+
+More research could have gone into other similar designs that already exist. If more research was done then maybe it would have required less iterations to get to a working solution. Below is an image of the 3D parts printed that didn't end up in the final design due to different problems.
+
+<div style="text-align: center;">
+  <img src="./Documentation%20Resources/iteration_box.jpg" alt="iteration_box" width="400px">
+</div>
+
+### Future Improvements
+
+**Adjustable Card Guide**
+In future iterations of this project, implementing an adjustable card guide could be a useful feature. This mechanism, similar to the adjustable paper trays found in printers, would allow the shuffler to accommodate various sizes of cards. It would involve creating a movable guide within the card holder to securely position cards of different widths and lengths. This feature would increase the versatility of the card shuffler, allowing it to be used with a wider range of card games and deck styles.
+
+**Improved Card Retrieval Mechanism**
+Presently, accessing shuffled cards can be a bit challenging. For future iterations, an improved card retrieval mechanism could be designed. This could be a chute that guides the shuffled cards to a specific location or a platform where the shuffled cards are collected for easy pickup. 
+
+**Enhanced Shuffling Mechanism**
+The current shuffling mechanism moves the bottom card from one of two piles. While this does shuffle the cards randomly, it does not allow for all possible card permeations. Future versions could look at incorporating a more advanced shuffling algorithm or mechanism. This could include random selection of cards from different positions within the pile.
+
+**User Interface**
+The user interface of this project is simple and functional, but there is room for enhancement. Currently, the user interface only allows for changing the number of cards, shuffling speed and different shuffling methods adding the abililty to adjust settings for the card guide or other features could prove useful.
+
+**Connectivity and IoT Security**
+The current project utilizes aREST.js for network connectivity, which, while functional, presents certain limitations particularly concerning security. Future iterations would benefit from exploring alternative IoT platforms that provide enhanced security features such as AWS IoT or Google Cloud IoT.
+
+**Smartphone Integration**
+Integrating the card shuffler with a smartphone application could provide additional functionality and convenience. The smartphone app could allow users to control and monitor the shuffling process remotely, adjust settings, and receive notifications or alerts. This would enhance the user experience and provide more flexibility in using the card shuffler.
+
+### What went well?
+
+**Meeting Project Specifications**
+Overall, the project successfully met its specifications, resulting in the creation of a functional card shuffling IoT device. The device is capable of shuffling cards, detecting card jams, and providing a user interface for control and monitoring.
+
+**Sturdy Chassis Design**
+The chassis of the device has a sturdy build and remains in excellent condition even after extensive testing. The 3D printed nature of the design allows for easy maintainability, scalability, and upgrades. Parts can be easily replaced or modified, providing flexibility for future improvements or alterations to accommodate different card sizes or design preferences.
+
+**Functional User Interface**
+The user interface of the device is simple and functional. Users can control the number of cards to shuffle, adjust the shuffling speed, and choose different shuffling methods. The implementation of REST calls and WiFi connectivity provides a convenient way to interact with the device remotely.
+
+**Ease of Documentation Updates**
+During the project, the importance of documentation became evident. Although there were some improvements to be made in the documentation process, updating the documentation as the project progressed was relatively easy due to the use of Markdown format. This allowed for clear and organized documentation, facilitating future development, troubleshooting, and sharing of the project.
+
+**Time Management and Progress**
+The project benefited from good time management practices, ensuring consistent and steady progress. The order in which tasks were completed was well-planned and logical, allowing for efficient development and troubleshooting. Regular tracking of progress and adherence to timelines helped maintain momentum and deliver the project within the expected timeframe.
+
+**Testing and Debugging**
+Thorough testing and debugging played a crucial role in the success of the project. Testing was conducted at various stages to ensure the functionality and reliability of the device. Issues and bugs were identified and addressed promptly, resulting in a stable final product. However, further improvements could be made in expanding the test coverage and implementing automated testing procedures.
+
+**Learning and Skill Development**
+The project provided valuable opportunities for learning and skill development. Through hands-on implementation, I gained practical experience in various aspects of hardware integration, software development, and IoT connectivity as well as some other skills such as using Fusion 360 and CAD design.
+
+
+
+## Additional Resources and References
+
+Below are some important resources and references that will provide further understanding and context to the project:
+
+
+1. **Arduino Programming Language (API)**: This is the main reference to understand the Arduino Programming Language used to program the microcontroller in this project. You can find it [here](https://www.arduino.cc/reference/en/).
+
+2. **WiFi.h**: This library provides the necessary functions to connect to Wi-Fi networks and set up an access point. Check out the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WiFi). Course notes on WiFI based provisioning: https://iot.unphone.net/#wifi-based-provisioning
+
+3. **WebServer.h**: This library is used to create a simple HTTP server on the ESP32. View the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/WebServer).
+
+4. **HTTPClient.h**: This library provides functions to make HTTP requests, used to get firmware updates from the server. The source is available [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/HTTPClient).
+
+5. **Update.h**: This library is used for handling OTA updates on the ESP32. You can check out the source [here](https://github.com/espressif/arduino-esp32/tree/master/libraries/Update).
+
+6. **Adafruit Motor Shield Library Documentation**: This [documentation](https://learn.adafruit.com/adafruit-motor-shield-v2-for-arduino/install-software) provides essential information about the motor shield library used in the project.
+
+7. **Adafruit HUZZAH32 – ESP32 Feather Board**: This is the datasheet for the Adafruit HUZZAH32 – ESP32 Feather Board. It is available [here](https://learn.adafruit.com/adafruit-huzzah32-esp32-feather).
+
+8. **aREST Library**: Here is the [aREST library](https://arest.io/) that makes building IoT devices easier.
+
+9. **Arduino OTA Updates**: Check out this [tutorial](https://randomnerdtutorials.com/esp32-over-the-air-ota-programming/) to understand more about OTA updates in Arduino. Course notes on OTA updates: https://iot.unphone.net/#over-the-air-updates-ota
+
+10. **Motor Setup**: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-a-robocar.mkd  and https://iot.unphone.net/#a-simple-robot-car
+
+11. **Ultrasonic Sensor HC-SR04 Setup Instructions** found here: https://gitlab.com/hamishcunningham/the-internet-of-things/-/blob/master/micasa/08-ultrasonicsensors.mkd and https://iot.unphone.net/#ultrasonic-sensors
+
+12. **ESP32 S3**: Programming guide: https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/get-started/index.html and course notes: https://iot.unphone.net/#esp-idf-freertos-and-the-esp32-arduino-core
+
+## Contact
+- You can reach me at [egoodbrand1@sheffield.ac.uk](mailto:egoodbrand1@sheffield.ac.uk) for any queries.
+
